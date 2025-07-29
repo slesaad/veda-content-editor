@@ -57,6 +57,9 @@
     "fs": "^0.0.1-security",
     "geist": "1.2.2",
     "gray-matter": "^4.0.3",
+    "jotai": "^2.12.5",
+    "jotai-location": "^0.5.5",
+    "jotai-optics": "^0.3.2",
     "lexical": "0.23.1",
     "markdown-it": "^14.1.0",
     "mdast": "^3.0.0",
@@ -76,7 +79,14 @@
     "sugar-high": "^0.6.0"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@vitejs/plugin-react": "^4.5.0",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
     "vite": "^4.5.14"
   }
 }

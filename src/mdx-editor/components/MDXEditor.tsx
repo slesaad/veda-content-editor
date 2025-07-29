@@ -127,7 +127,7 @@ export function MDXEditorEnhanced({
         }}
         contentEditableClassName='prose prose-lg max-w-none min-h-[500px] outline-none px-4 py-2'
         plugins={[
-          scrollytellingButtonPlugin(),
+          // scrollytellingButtonPlugin(), // Temporarily disable custom plugin
           headingsPlugin(),
           listsPlugin(),
           quotePlugin(),
@@ -141,7 +141,6 @@ export function MDXEditorEnhanced({
           jsxPlugin({
             jsxComponentDescriptors,
           }),
-          markdownShortcutPlugin(),
           directivesPlugin({
             directiveDescriptors: [CalloutDirectiveDescriptor],
           }),
