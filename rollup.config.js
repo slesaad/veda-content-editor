@@ -18,11 +18,19 @@ export default {
       sourcemap: true,
       interop: 'auto',
       exports: 'named',
+      compact: false,
+      generatedCode: {
+        constBindings: true,
+      },
     },
     {
       file: packageJson.module,
       format: 'esm',
       sourcemap: true,
+      compact: false,
+      generatedCode: {
+        constBindings: true,
+      },
     },
   ],
   plugins: [

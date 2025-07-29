@@ -6,7 +6,8 @@
         "targets": {
           "esmodules": true
         },
-        "modules": false
+        "modules": false,
+        "loose": false
       }
     ],
     "@babel/preset-react",
@@ -14,5 +15,9 @@
   ],
   "plugins": [
     "@babel/plugin-proposal-class-properties"
-  ]
+  ],
+  "compact": false,
+  "minified": false,
+  "comments": true,
+  "retainLines": true
 }
