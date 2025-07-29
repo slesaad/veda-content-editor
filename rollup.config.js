@@ -53,14 +53,26 @@ export default {
       jsx: 'react-jsx',
     }),
     babel({
-      babelHelpers: 'bundled',
+      babelHelpers: 'runtime',
       exclude: 'node_modules/**',
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: [
-        ['@babel/preset-env', { targets: { esmodules: true } }],
+        ['@babel/preset-env', { 
+          targets: { esmodules: true },
+          bugfixes: true,
+          modules: false
+        }],
         '@babel/preset-react',
         '@babel/preset-typescript'
       ],
+      plugins: [
+        ['@babel/plugin-transform-runtime', {
+          corejs: false,
+          helpers: true,
+          regenerator: false,
+          useESModules: true
+        }]
+      ]
     }),
     json(),
     postcss({

@@ -31,6 +31,13 @@ function App() {
 
 ## Important Notes
 
+### Version 0.1.5
+- Fixed babel class inheritance helpers issue (no more `__proto__` errors)
+- Configured proper ESM output with babel runtime
+- Removed dangerous eval() usage for security
+- Added @babel/runtime as dependency
+- All fixes from previous versions included
+
 ### Version 0.1.4
 - Fixed CSS handling with PostCSS for better build system compatibility
 - Corrected import syntax in documentation (named export)
