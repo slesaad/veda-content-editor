@@ -31,6 +31,11 @@ function App() {
 
 ## Important Notes
 
+### Version 0.1.3
+- Enhanced build output formatting with explicit non-minification settings
+- Improved code readability in bundled output
+- All fixes from 0.1.2 included
+
 ### Version 0.1.2
 - Fixed build configuration issues from 0.1.0
 - Added proper babel transpilation for class inheritance
