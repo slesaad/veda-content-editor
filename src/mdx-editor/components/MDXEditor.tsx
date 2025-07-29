@@ -62,7 +62,7 @@ export function MDXEditorEnhanced({
   previewMDAST,
 }: any) {
   const editorRef = useRef(null);
-  const [mdast, setMdast] = useState(null);
+  const [mdast, setMdast] = useState<any>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
 
   // Check if editor is ready after mount
@@ -81,7 +81,7 @@ export function MDXEditorEnhanced({
 
   const analyzeMdast = () => {
     try {
-      const markdown = editorRef.current && editorRef.current.getMarkdown();
+      const markdown = editorRef.current && (editorRef.current as any).getMarkdown();
 
       if (markdown) {
         const tree = fromMarkdown(markdown, {
@@ -92,7 +92,7 @@ export function MDXEditorEnhanced({
         //Below re parses it and converts back to accepted MDX values.
         visit(tree, 'mdxJsxFlowElement', (node) => {
           if (
-            ['RightColumn', 'LeftColumn'].includes(node.name) &&
+            ['RightColumn', 'LeftColumn'].includes(node.name as string) &&
             node.children.length > 0
           ) {
             // The round-trip of getMarkdown() -> fromMarkdown() can cause the rich content of the columns
@@ -100,10 +100,10 @@ export function MDXEditorEnhanced({
             const innerMarkdown = (node.children[0] as any)?.value;
             // Only re-parse if innerMarkdown is a string. It can be undefined if the child is not a text/code node.
             if (typeof innerMarkdown === 'string') {
-              node.children = fromMarkdown(innerMarkdown, {
+              (node as any).children = fromMarkdown(innerMarkdown, {
                 extensions: [mdxJsx()],
                 mdastExtensions: [mdxJsxFromMarkdown()],
-              }).children;
+              }).children as any[];
             }
           }
         });
@@ -113,7 +113,7 @@ export function MDXEditorEnhanced({
       }
     } catch (error) {
       console.error('Error analyzing MDAST:', error);
-      alert('Error analyzing MDAST: ' + error.message);
+      alert('Error analyzing MDAST: ' + (error as Error).message);
     }
   };
 

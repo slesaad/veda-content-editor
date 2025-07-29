@@ -19,9 +19,14 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 /**
  * Generic node grouping plugin that allows custom filtering and grouping of nodes
  */
-export const GenericNodeGroupingPlugin: React.FC = ({
-  groupingFunction = defaultGroupingFunction,
-  transformFunction = defaultTransformFunction,
+interface GenericNodeGroupingPluginProps {
+  groupingFunction?: (node: any, index: number, allNodes: any[]) => string | null;
+  transformFunction?: (nodeGroup: any[], groupKey: string) => void;
+}
+
+export const GenericNodeGroupingPlugin: React.FC<GenericNodeGroupingPluginProps> = ({
+  groupingFunction,
+  transformFunction,
 }) => {
   const [editor] = useLexicalComposerContext();
   // Default grouping logic - groups code blocks with same language
@@ -72,7 +77,8 @@ export const GenericNodeGroupingPlugin: React.FC = ({
             const groups = {};
 
             allNodes.forEach((node, index) => {
-              const groupKey = groupingFunction(node, index, allNodes);
+              const gf = groupingFunction || defaultGroupingFunction;
+              const groupKey = gf(node, index, allNodes);
 
               if (groupKey) {
                 if (!groups[groupKey]) {
@@ -84,8 +90,9 @@ export const GenericNodeGroupingPlugin: React.FC = ({
 
             // Process each group using the transform function
             Object.entries(groups).forEach(([groupKey, nodeGroup]) => {
-              if (nodeGroup.length > 1) {
-                transformFunction(nodeGroup, groupKey);
+              if ((nodeGroup as any[]).length > 1) {
+                const tf = transformFunction || defaultTransformFunction;
+                tf(nodeGroup as any[], groupKey);
               }
             });
           });

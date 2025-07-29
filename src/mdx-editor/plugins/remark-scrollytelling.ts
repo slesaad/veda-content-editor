@@ -5,10 +5,10 @@ export function remarkDummyButtonSerialize() {
     return (tree: Root) => {
       console.log('✅ Serialize plugin is executing...'); // ADD THIS
       visit(tree, 'mdxJsxFlowElement', (node: Node) => {
-        if (node.name === 'DummyButton') {
+        if ((node as any).name === 'DummyButton') {
           console.log('🚨 Found DummyButton for serialization:', node); // ADD THIS
-          node.name = 'ScrollytellingBlock';
-          node.children = [
+          (node as any).name = 'ScrollytellingBlock';
+          (node as any).children = [
             {
               type: 'mdxJsxFlowElement',
               name: 'Chapter',
@@ -34,12 +34,12 @@ export function remarkDummyButtonDeserialize() {
   return (tree: Root) => {
     console.log('🚩 Deserialize Plugin Running');
     visit(tree, 'mdxJsxFlowElement', (node: Node) => {
-      if (node.name === 'ScrollytellingBlock') {
-        const chapterNode = node.children.find((child: Node) => child.type === 'mdxJsxFlowElement' && child.name === 'Chapter');
+      if ((node as any).name === 'ScrollytellingBlock') {
+        const chapterNode = (node as any).children.find((child: any) => child.type === 'mdxJsxFlowElement' && child.name === 'Chapter');
         if (chapterNode) {
-          node.name = 'DummyButton';
-          node.attributes = [];
-          node.children = [];
+          (node as any).name = 'DummyButton';
+          (node as any).attributes = [];
+          (node as any).children = [];
         }
       }
     });

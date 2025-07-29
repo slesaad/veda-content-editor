@@ -17,7 +17,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
     kind: 'flow',
     source: './components', // Adjust the path
     hasChildren: true,
-    props: [{ name: 'children', type: 'object' }],
+    props: [{ name: 'children', type: 'expression' }],
     Editor: (props) => {
       return <TwoColumnEditorWrapper props={{ ...props }} />;
     },
@@ -51,7 +51,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
     kind: 'flow',
     source: './components', // Adjust the path
     hasChildren: true,
-    props: [{ name: 'children', type: 'object' }],
+    props: [{ name: 'children', type: 'expression' }],
     Editor: GenericJsxEditor,
   },
   {
@@ -59,14 +59,16 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
     kind: 'flow',
     source: './components',
     hasChildren: true,
-    props: [{ name: 'children', type: 'object' }],
+    props: [{ name: 'children', type: 'expression' }],
+    Editor: GenericJsxEditor,
   },
   {
     name: 'RightColumn',
     kind: 'flow',
     source: './components',
     hasChildren: true,
-    props: [{ name: 'children', type: 'object' }],
+    props: [{ name: 'children', type: 'expression' }],
+    Editor: GenericJsxEditor,
   },
   {
     name: 'Map',
@@ -86,7 +88,11 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   return (
     <>
       <MapEditorWrapper 
-        props={{ ...props }} 
+        {...props}
+        {...props.mdastNode.attributes.reduce((acc: any, attr: any) => {
+          acc[attr.name] = attr.value;
+          return acc;
+        }, {})}
         allAvailableDatasets={allAvailableDatasets}
       />
     </>

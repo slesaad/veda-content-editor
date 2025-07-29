@@ -1,3 +1,15 @@
+interface DatasetWithContent {
+  metadata: {
+    id: string;
+    name: string;
+    description: string;
+    taxonomy?: any[];
+    layers?: any[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 const allAvailableDatasets: DatasetWithContent[] = [
     {
       metadata: {

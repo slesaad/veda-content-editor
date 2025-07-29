@@ -9,7 +9,16 @@ import { DEFAULT_MAP_PROPS } from './ToolbarComponents';
 import { InputField } from '../utils/CreateInterface';
 import { ClientMapBlock } from './MapPreview';
 
-// import { DatasetWithContent } from 'app/types/content';
+interface DatasetWithContent {
+  metadata: {
+    id: string;
+    name: string;
+    description: string;
+    layers?: any[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
 
 interface EditorMapProps extends MapProps {
   node?: LexicalNode & { setProps?: (props: Partial<MapProps>) => void };
@@ -269,7 +278,7 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
                   {firstInterface.map((field) => {
                     const { propName } = field;
 
-                    const fieldProps = {
+                    const fieldProps: any = {
                       ...field,
                       value: mapProps[propName],
                       onChange: setMapProps,
@@ -292,7 +301,9 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
                 <h4>Map Comparison</h4>
                 <div className='grid-row flex-align-end grid-gap-2'>
                   {comparisonInterface.map((field) => {
-                    const { propName, fieldName, type, customClass } = field;
+                    const { propName, fieldName } = field;
+                    const type = (field as any).type;
+                    const customClass = (field as any).customClass;
 
                     return InputField({
                       ...field,
@@ -306,14 +317,15 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
                       draftInputs,
                       setDraftInputs,
                       inputErrors,
-                      allAvailableDatasets,
                       setInputErrors,
                     });
                   })}
                 </div>
                 <div className='grid-row flex-align-start grid-gap-2'>
                   {captionInterface.map((field) => {
-                    const { propName, fieldName, type, customClass } = field;
+                    const { propName, fieldName } = field;
+                    const type = (field as any).type;
+                    const customClass = (field as any).customClass;
 
                     return InputField({
                       ...field,
@@ -324,7 +336,6 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
                       componentProps: mapProps,
                       propName: propName,
                       customClass: customClass,
-                      allAvailableDatasets,
                     });
                   })}
                 </div>

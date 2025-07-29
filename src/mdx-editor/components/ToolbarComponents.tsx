@@ -42,9 +42,10 @@ export const LeftColumnEditor: React.FC<any> = ({ mdastNode, descriptor }) => {
   return (
     <div className='border rounded-md p-2'>
       <NestedLexicalEditor
-        getContent={(node) => node.children}
+        getContent={(node) => (node as any).children}
         getUpdatedMdastNode={(node, children) => {
           updateMdastNode({ ...mdastNode, children });
+          return node;
         }}
       />
     </div>
@@ -149,11 +150,13 @@ export const InsertTwoColumnButton = () => {
           {
             type: 'mdxJsxFlowElement',
             name: 'LeftColumn',
+            attributes: [],
             children: [{ type: 'paragraph', children: [{ type: 'text', value: '' }] }],
           },
           {
             type: 'mdxJsxFlowElement',
             name: 'RightColumn',
+            attributes: [],
             children: [{ type: 'paragraph', children: [{ type: 'text', value: '' }] }],
           },
         ],

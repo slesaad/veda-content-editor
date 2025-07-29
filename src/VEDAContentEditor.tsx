@@ -67,18 +67,18 @@ export default function EditorPage({
   }, []);
 
   // This function handles tab switching
-  const handleTabChange = (index) => {
+  const handleTabChange = (index: number) => {
     setSelectedTab(index);
 
     // If switching to preview or source, hide editor
     if ((index === 1 || index === 2) && editorContainerRef.current) {
-      const container = editorContainerRef.current;
+      const container = editorContainerRef.current as HTMLElement;
       container.style.visibility = 'hidden';
       container.style.position = 'absolute';
       container.style.pointerEvents = 'none';
     } else if (index === 0 && editorContainerRef.current) {
       // If switching to editor, restore visibility
-      const container = editorContainerRef.current;
+      const container = editorContainerRef.current as HTMLElement;
       container.style.visibility = 'visible';
       container.style.position = 'static';
       container.style.pointerEvents = 'auto';
@@ -191,7 +191,7 @@ export default function EditorPage({
 }
 const initialConfig = {
   namespace: 'MyEditor', // Unique namespace for this editor instance
-  onError: (error) => {
+  onError: (error: Error) => {
     console.error('Lexical editor error:', error);
   },
   // ... other Lexical configuration options if needed

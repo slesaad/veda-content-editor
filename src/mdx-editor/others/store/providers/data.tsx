@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { ReactQueryProvider } from '@teamimpact/veda-ui';
-// import { DatasetMetadata } from 'app/types/content';
+
+interface DatasetMetadata {
+  id: string;
+  name: string;
+  description: string;
+  [key: string]: any;
+}
 
 interface DataStore {
   datasets?: DatasetMetadata[];

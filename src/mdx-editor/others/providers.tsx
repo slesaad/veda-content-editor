@@ -2,7 +2,13 @@ import React, { ReactNode } from 'react';
 import DataProvider from './store/providers/data';
 import VedaUIConfigProvider from './store/providers/veda-ui-config';
 import DevseedUIThemeProvider from './store/providers/theme';
-// import { DatasetMetadata } from 'app/types/content';
+
+interface DatasetMetadata {
+  id: string;
+  name: string;
+  description: string;
+  [key: string]: any;
+}
 
 interface ProviderProps {
   datasets?: DatasetMetadata[];
