@@ -1,0 +1,151 @@
+/* MDXEditor CSS Overrides */
+
+/* Toolbar styling */
+.mdxeditor-toolbar {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Toolbar buttons */
+.mdxeditor-toolbar button {
+  padding: 4px 8px;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.mdxeditor-toolbar button:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.mdxeditor-toolbar button.mdxeditor-active-button {
+  background-color: #e7f5ff;
+  border-color: #228be6;
+  color: #228be6;
+}
+
+/* Toolbar select dropdowns */
+.mdxeditor-toolbar select {
+  padding: 4px 8px;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Grid layout for toolbar rows */
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.grid-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.border-bottom-1px {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.padding-y-1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* Editor content area */
+.mdxeditor-root-contenteditable {
+  padding: 16px;
+  min-height: 500px;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Fix for dialog/modal inputs */
+.mdxeditor-dialog-content input,
+.mdxeditor-dialog-content textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+/* Dialog buttons */
+.mdxeditor-dialog-content button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.mdxeditor-dialog-content button[type="submit"] {
+  background-color: #228be6;
+  color: white;
+  border-color: #228be6;
+}
+
+/* Fix icon sizing */
+.mdxeditor-toolbar svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Map editor specific styles */
+.map-editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.map-editor-form label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.map-editor-form input,
+.map-editor-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Ensure buttons have proper styling */
+button[type="button"] {
+  cursor: pointer;
+}
+
+/* Toolbar dividers */
+.mdxeditor-toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #dee2e6;
+  margin: 0 8px;
+}
