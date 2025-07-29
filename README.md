@@ -31,10 +31,11 @@ function App() {
 
 ## Important Notes
 
-### Version 0.1.1
+### Version 0.1.2
 - Fixed build configuration issues from 0.1.0
 - Added proper babel transpilation for class inheritance
 - Improved React version compatibility (supports React 16.8+, 17, and 18)
+- Removed minification for easier debugging
 
 ### Peer Dependencies
 This package requires:
