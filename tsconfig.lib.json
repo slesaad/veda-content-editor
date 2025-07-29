@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": false,
+    "allowJs": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/lib/**/*",
+    "src/VEDAContentEditor.tsx",
+    "src/mdx-editor/**/*",
+    "src/mdx-plugins/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/main.jsx",
+    "src/App.jsx"
+  ]
+}
