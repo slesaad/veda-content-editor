@@ -11,7 +11,7 @@ npm install @slesaad/veda-content-editor
 ## Usage
 
 ```jsx
-import VEDAContentEditor from '@slesaad/veda-content-editor';
+import { VEDAContentEditor } from '@slesaad/veda-content-editor';
 import '@slesaad/veda-content-editor/dist/styles.css';
 
 function App() {
@@ -30,6 +30,12 @@ function App() {
 ```
 
 ## Important Notes
+
+### Version 0.1.4
+- Fixed CSS handling with PostCSS for better build system compatibility
+- Corrected import syntax in documentation (named export)
+- Added troubleshooting guide
+- All fixes from previous versions included
 
 ### Version 0.1.3
 - Enhanced build output formatting with explicit non-minification settings
@@ -70,6 +76,22 @@ To build the library:
 ```bash
 npm run build:lib
 ```
+
+## Troubleshooting
+
+### CSS Import Issues
+Make sure to import the styles in your application:
+```jsx
+import '@slesaad/veda-content-editor/dist/styles.css';
+```
+
+### Build System Compatibility
+If you're using Create React App, Vite, or Next.js, the package should work out of the box. For custom webpack configurations, you may need to ensure CSS imports from node_modules are properly handled.
+
+### React Version Conflicts
+While the package supports React 16.8+, some sub-dependencies may have stricter requirements. If you encounter version conflicts, try:
+1. Using React 18 (recommended)
+2. Adding resolutions/overrides in your package.json
 
 ## License
 

@@ -5,6 +5,7 @@ import babel from '@rollup/plugin-babel';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import json from '@rollup/plugin-json';
 import css from 'rollup-plugin-css-only';
+import postcss from 'rollup-plugin-postcss';
 import { readFileSync } from 'fs';
 
 const packageJson = JSON.parse(readFileSync('./package-lib.json', 'utf-8'));
@@ -62,7 +63,13 @@ export default {
       ],
     }),
     json(),
-    css({ output: 'styles.css' }),
+    postcss({
+      extract: 'styles.css',
+      minimize: false,
+      sourceMap: true,
+      use: ['sass'],
+      extensions: ['.css', '.scss', '.sass'],
+    }),
   ],
   external: [
     'react',

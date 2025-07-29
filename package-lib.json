@@ -1,6 +1,6 @@
 {
-  "name": "@veda/content-editor",
-  "version": "0.1.0",
+  "name": "@slesaad/veda-content-editor",
+  "version": "0.1.4",
   "description": "VEDA Content Editor - A React-based MDX editor component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -13,8 +13,8 @@
     "prepublishOnly": "npm run build:lib"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": ">=16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
     "@devseed-ui/theme-provider": "^4.1.0",
