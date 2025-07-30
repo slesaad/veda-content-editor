@@ -9,10 +9,6 @@ import { readFileSync } from 'fs';
 
 const packageJson = JSON.parse(readFileSync('./package-lib.json', 'utf-8'));
 
-// Get all dependencies and peer dependencies
-const deps = Object.keys(packageJson.dependencies || {});
-const peerDeps = Object.keys(packageJson.peerDependencies || {});
-
 export default {
   input: 'src/lib/index.ts',
   output: [
@@ -22,46 +18,36 @@ export default {
       sourcemap: true,
       interop: 'auto',
       exports: 'named',
-      // Don't bundle external dependencies
-      paths: {
-        'acorn-jsx': 'acorn-jsx'
-      }
     },
     {
       file: packageJson.module,
       format: 'esm',
       sourcemap: true,
-      // Don't bundle external dependencies
-      paths: {
-        'acorn-jsx': 'acorn-jsx'
-      }
     },
   ],
   plugins: [
     // Automatically externalize peer dependencies
     peerDepsExternal(),
     
-    // Resolve node modules
+    // Resolve node modules - but ONLY for our source code
     resolve({
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       preferBuiltins: false,
       browser: true,
-      // Don't bundle these - they should remain external
-      resolveOnly: (module) => {
-        // Don't resolve any npm packages - keep them external
-        if (module.includes('node_modules')) return false;
-        return true;
-      }
+      // Only resolve files in src directory, not node_modules
+      resolveOnly: [
+        /^(?!.*node_modules)/
+      ]
     }),
     
     // Convert CommonJS modules
     commonjs({
-      include: /node_modules/,
+      // Only transform our source files, not dependencies
+      include: ['src/**/*'],
+      exclude: ['node_modules/**'],
       requireReturnsDefault: 'preferred',
       transformMixedEsModules: true,
       defaultIsModuleExports: true,
-      // Important: don't transform modules that should stay external
-      ignore: deps.concat(peerDeps)
     }),
     
     // Compile TypeScript
@@ -79,6 +65,8 @@ export default {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       babelrc: false,
       configFile: './babel.config.js',
+      // Only process our source files
+      include: ['src/**/*']
     }),
     
     // Handle JSON imports
@@ -94,23 +82,57 @@ export default {
     }),
   ],
   
-  // Mark all dependencies as external
-  external: [
-    // React
-    /^react($|\/)/,
-    /^react-dom($|\/)/,
+  // This is the critical part - mark EVERYTHING from node_modules as external
+  external: (id, parent, isResolved) => {
+    // Never externalize our source files
+    if (id.startsWith('./src') || id.startsWith('src/') || id.includes('/src/')) {
+      return false;
+    }
     
-    // Node built-ins
-    'os',
-    'path',
-    'fs',
-    'url',
+    // Always externalize node built-ins
+    if (id.startsWith('node:') || ['fs', 'path', 'os', 'url', 'util', 'stream', 'buffer'].includes(id)) {
+      return true;
+    }
     
-    // All runtime dependencies
-    /@babel\/runtime/,
+    // Always externalize anything from node_modules
+    if (id.includes('node_modules')) {
+      return true;
+    }
     
-    // Mark each dependency as external with regex to catch sub-imports
-    ...deps.map(dep => new RegExp(`^${dep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|/)`)),
-    ...peerDeps.map(dep => new RegExp(`^${dep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|/)`))
-  ],
+    // Always externalize bare module specifiers (no relative path)
+    if (!id.startsWith('.') && !id.startsWith('/')) {
+      return true;
+    }
+    
+    // Externalize specific problematic packages even if accessed via relative paths
+    const problematicPackages = [
+      '@babel/runtime',
+      'react',
+      'react-dom',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
+      '@mdx-js',
+      '@mdxeditor',
+      'micromark',
+      'mdast',
+      'acorn',
+      'acorn-jsx',
+      '@lexical',
+      '@teamimpact',
+      '@trussworks',
+      '@devseed-ui',
+      '@heroicons',
+      'next-mdx-remote',
+      'sugar-high',
+      'gray-matter',
+      'styled-components',
+      'jotai'
+    ];
+    
+    if (problematicPackages.some(pkg => id.includes(pkg))) {
+      return true;
+    }
+    
+    return false;
+  },
 };

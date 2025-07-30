@@ -28,7 +28,7 @@ export default {
       }
     ]
   ],
-  // Ensure we don't accidentally inline helpers
+  // Don't inline helpers
   assumptions: {
     setPublicClassFields: true
   }
