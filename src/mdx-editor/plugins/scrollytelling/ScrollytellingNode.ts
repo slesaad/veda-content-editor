@@ -1,4 +1,9 @@
-import { ElementNode, LexicalNode, NodeKey, SerializedElementNode } from 'lexical'
+import { ElementNode, LexicalNode, NodeKey, SerializedElementNode, DOMConversionMap, DOMConversionOutput } from 'lexical'
+
+export type SerializedScrollytellingNode = SerializedElementNode & {
+  type: 'scrollytelling';
+  version: 1;
+};
 
 export class ScrollytellingNode extends ElementNode {
   static getType(): string {
@@ -7,6 +12,10 @@ export class ScrollytellingNode extends ElementNode {
 
   static clone(node: ScrollytellingNode): ScrollytellingNode {
     return new ScrollytellingNode(node.__key)
+  }
+
+  constructor(key?: NodeKey) {
+    super(key);
   }
 
   createDOM(): HTMLElement {
@@ -19,16 +28,21 @@ export class ScrollytellingNode extends ElementNode {
     return false
   }
 
-  static importJSON(): ScrollytellingNode {
-    return new ScrollytellingNode()
+  static importJSON(serializedNode: SerializedScrollytellingNode): ScrollytellingNode {
+    const node = new ScrollytellingNode()
+    return node
   }
 
-  exportJSON(): SerializedElementNode {
+  exportJSON(): SerializedScrollytellingNode {
     return {
       ...super.exportJSON(),
       type: 'scrollytelling',
       version: 1,
     }
+  }
+
+  static importDOM(): DOMConversionMap | null {
+    return {};
   }
 }
 

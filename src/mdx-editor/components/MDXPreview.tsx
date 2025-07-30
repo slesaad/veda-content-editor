@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { customComponents } from './components';
 // import { ChartWrapper } from './ChartPreview';
-import { DEFAULT_MAP_PROPS } from './ToolbarComponents.tsx';
+import { DEFAULT_MAP_PROPS } from './ToolbarComponents';
 import { highlight } from 'sugar-high';
 import { Link } from "react-router-dom";
 
@@ -188,7 +188,7 @@ export function SimpleMDXPreview({ source }: MDXPreviewProps) {
           <Suspense
             fallback={<div className='p-4'>Loading MDX preview...</div>}
           >
-            <MDXRemote source={safeSource} components={components} />
+            <MDXRemote source={safeSource} components={components as any} />
           </Suspense>
         </Providers>
       </article>

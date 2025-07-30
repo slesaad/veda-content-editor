@@ -33,37 +33,52 @@ This is a live editor where you can write and preview MDX content.
 Try editing this content!
 `;
 
-export default function EditorPage({ allAvailableDatasets }) {
-  const [mdxContent, setMdxContent] = useState(initialContent);
+export interface EditorPageProps {
+  allAvailableDatasets?: any[];
+  initialContent?: string;
+  onChange?: (content: string) => void;
+  className?: string;
+}
+
+export default function EditorPage({ 
+  allAvailableDatasets,
+  initialContent: customInitialContent,
+  onChange,
+  className 
+}: EditorPageProps) {
+  const [mdxContent, setMdxContent] = useState(customInitialContent || initialContent);
   const [reserializedMdxContent, setReserializedMdxContent] =
-    useState(initialContent);
+    useState(customInitialContent || initialContent);
   const [selectedTab, setSelectedTab] = useState(0);
   const [editorMounted, setEditorMounted] = useState(false);
   const editorContainerRef = useRef(null);
   const handleContentChange = useCallback((content: string) => {
     setMdxContent(content);
+    if (onChange) {
+      onChange(content);
+    }
 
     // console.log('🔎 Updated MDX content:', content);
     //alert(`Updated MDX content:\n${content.substring(0, 200)}...`);
-  }, []);
+  }, [onChange]);
   // Set editor as mounted once it's loaded
   useEffect(() => {
     setEditorMounted(true);
   }, []);
 
   // This function handles tab switching
-  const handleTabChange = (index) => {
+  const handleTabChange = (index: number) => {
     setSelectedTab(index);
 
     // If switching to preview or source, hide editor
     if ((index === 1 || index === 2) && editorContainerRef.current) {
-      const container = editorContainerRef.current;
+      const container = editorContainerRef.current as HTMLElement;
       container.style.visibility = 'hidden';
       container.style.position = 'absolute';
       container.style.pointerEvents = 'none';
     } else if (index === 0 && editorContainerRef.current) {
       // If switching to editor, restore visibility
-      const container = editorContainerRef.current;
+      const container = editorContainerRef.current as HTMLElement;
       container.style.visibility = 'visible';
       container.style.position = 'static';
       container.style.pointerEvents = 'auto';
@@ -176,7 +191,7 @@ export default function EditorPage({ allAvailableDatasets }) {
 }
 const initialConfig = {
   namespace: 'MyEditor', // Unique namespace for this editor instance
-  onError: (error) => {
+  onError: (error: Error) => {
     console.error('Lexical editor error:', error);
   },
   // ... other Lexical configuration options if needed

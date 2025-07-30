@@ -1,30 +1,55 @@
 //app/components/mdx-plugins/nodes/DummyButtonNode.tsx
 
-import { DecoratorNode } from 'lexical'
+import React from 'react'
+import { DecoratorNode, NodeKey, SerializedLexicalNode, DOMExportOutput, DOMConversionMap, EditorConfig } from 'lexical'
+
+export type SerializedDummyButtonNode = SerializedLexicalNode & {
+  type: 'dummy-button-node';
+  version: 1;
+};
 
 export class DummyButtonNode extends DecoratorNode<JSX.Element> {
-  static getType() { return 'dummy-button-node' }
+  static getType(): string { 
+    return 'dummy-button-node' 
+  }
+
+  constructor(key?: NodeKey) {
+    super(key);
+  }
 
   static clone(node: DummyButtonNode): DummyButtonNode {
     return new DummyButtonNode(node.__key)
   }
 
-  static importJSON(_serializedNode: any): DummyButtonNode {
+  static importJSON(serializedNode: SerializedDummyButtonNode): DummyButtonNode {
     return new DummyButtonNode()
   }
 
-  exportJSON(): any {
+  exportJSON(): SerializedDummyButtonNode {
     return {
       type: 'dummy-button-node',
       version: 1
     }
   }
 
-  createDOM() { return document.createElement('div') }
+  createDOM(config: EditorConfig): HTMLElement { 
+    return document.createElement('div') 
+  }
 
-  updateDOM() { return false }
+  updateDOM(): false { 
+    return false 
+  }
 
-  decorate() { 
+  exportDOM(): DOMExportOutput {
+    const element = document.createElement('div');
+    return { element };
+  }
+
+  static importDOM(): DOMConversionMap | null {
+    return {};
+  }
+
+  decorate(): JSX.Element { 
     return <div className="border rounded p-2 bg-purple-100">Scrollytelling Block Placeholder</div>
   }
 }

@@ -39,11 +39,11 @@ export const TwoColumnEditorWrapper = ({ props }) => {
     return (
       <NestedLexicalEditor
         getContent={(node) => {
-          return node.children.find((c) => c.name === column)?.children || [];
+          return (node as any).children.find((c: any) => c.name === column)?.children || [];
         }}
         block={true}
         getUpdatedMdastNode={(mdastNode, children) => {
-          const newChildren = mdastNode.children.map((child) =>
+          const newChildren = (mdastNode as any).children.map((child: any) =>
             child.name === column ? { ...child, children } : child
           );
           return { ...mdastNode, children: newChildren };

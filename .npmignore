@@ -1,0 +1,43 @@
+# Source files
+src/
+.env
+.env.local
+
+# Development files
+node_modules/
+.git/
+.gitignore
+.github/
+
+# Build configs
+rollup.config.js
+tsconfig.json
+tsconfig.lib.json
+vite.config.js
+package-lib.json
+babel.config.json
+
+# Docs
+README.md
+CHANGELOG.md
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage/
+.nyc_output/
+
+# Development
+public/
+index.html
