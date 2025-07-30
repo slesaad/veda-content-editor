@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test VEDA Editor</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        #root { 
+            height: 100vh; 
+            padding: 20px;
+        }
+        .error {
+            color: red;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">Loading...</div>
+    
+    <script type="text/babel">
+        // Test if we can actually create the editor
+        const { useState, useEffect } = React;
+        
+        function TestApp() {
+            const [error, setError] = useState(null);
+            const [loaded, setLoaded] = useState(false);
+            
+            useEffect(() => {
+                // Try to dynamically import the built module
+                import('./dist/index.esm.js')
+                    .then(module => {
+                        console.log('Module loaded:', module);
+                        console.log('Available exports:', Object.keys(module));
+                        
+                        if (module.VEDAContentEditor) {
+                            setLoaded(true);
+                            
+                            // Try to render the editor
+                            const Editor = module.VEDAContentEditor;
+                            ReactDOM.render(
+                                <Editor 
+                                    initialContent="# Test Content"
+                                    onChange={(content) => console.log('Content changed:', content)}
+                                    allAvailableDatasets={[]}
+                                />,
+                                document.getElementById('editor-container')
+                            );
+                        } else {
+                            setError('VEDAContentEditor not found in exports');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Import error:', err);
+                        setError(err.toString() + '\n' + err.stack);
+                    });
+            }, []);
+            
+            if (error) {
+                return <div className="error">Error: {error}</div>;
+            }
+            
+            if (!loaded) {
+                return <div>Loading editor module...</div>;
+            }
+            
+            return (
+                <div>
+                    <h1>VEDA Content Editor Test</h1>
+                    <div id="editor-container" style={{height: '400px', border: '1px solid #ccc'}}></div>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<TestApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -6,8 +6,55 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import json from '@rollup/plugin-json';
 import postcss from 'rollup-plugin-postcss';
 import { readFileSync } from 'fs';
+import path from 'path';
 
 const packageJson = JSON.parse(readFileSync('./package-lib.json', 'utf-8'));
+
+// Custom plugin to fix imports
+const fixImports = () => ({
+  name: 'fix-imports',
+  renderChunk(code) {
+    // Fix CommonJS interop for problematic packages
+    const commonjsPackages = ['@teamimpact/veda-ui', '@trussworks/react-uswds'];
+    let fixed = code;
+    
+    commonjsPackages.forEach(pkg => {
+      const escapedPkg = pkg.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      fixed = fixed.replace(
+        new RegExp(`import \\{([^}]+)\\} from '${escapedPkg}'`, 'g'),
+      (match, imports) => {
+        // Handle import aliases like "Image as Image$1"
+        const cleanedImports = imports.replace(/(\w+) as (\w+)/g, '$1');
+        const aliasMapping = {};
+        imports.match(/(\w+) as (\w+)/g)?.forEach(alias => {
+          const [original, renamed] = alias.split(' as ');
+          aliasMapping[original] = renamed;
+        });
+        
+        // Build the destructuring with aliases
+        const destructuring = imports.split(',').map(imp => {
+          const trimmed = imp.trim();
+          if (trimmed.includes(' as ')) {
+            const [original, renamed] = trimmed.split(' as ').map(s => s.trim());
+            return `${original}: ${renamed}`;
+          }
+          return trimmed;
+        }).join(', ');
+        
+        const varName = pkg.replace(/[@/-]/g, '_');
+        return `import ${varName} from '${pkg}';\nconst {${destructuring}} = ${varName}`;
+      });
+    });
+    
+    // Replace relative node_modules imports with proper module imports
+    fixed = fixed.replace(
+      /from ['"]\.\.\/\.\.\/node_modules\/(@mdxeditor\/editor\/dist\/[^'"]+)['"]/g,
+      'from "$1"'
+    );
+    
+    return fixed;
+  }
+});
 
 export default {
   input: 'src/lib/index.ts',
@@ -26,28 +73,39 @@ export default {
     },
   ],
   plugins: [
-    // Automatically externalize peer dependencies
-    peerDepsExternal(),
+    // Fix imports for CommonJS interop
+    fixImports(),
     
-    // Resolve node modules - but ONLY for our source code
+    // Automatically externalize peer dependencies
+    // DISABLED: We need to bundle some dependencies
+    // peerDepsExternal(),
+    
+    // Resolve node modules for bundling
     resolve({
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       preferBuiltins: false,
       browser: true,
-      // Only resolve files in src directory, not node_modules
-      resolveOnly: [
-        /^(?!.*node_modules)/
-      ]
+      dedupe: ['react', 'react-dom'],
+      // Force resolution of mdxeditor internal modules
+      mainFields: ['module', 'main'],
     }),
     
     // Convert CommonJS modules
     commonjs({
-      // Only transform our source files, not dependencies
-      include: ['src/**/*'],
-      exclude: ['node_modules/**'],
-      requireReturnsDefault: 'preferred',
+      // Process CommonJS so ESM import errors (e.g. acorn-jsx) disappear
+      // Include both our source and node_modules – then explicitly list
+      // dynamic targets we know we need (acorn-jsx)
+      include: [/node_modules/, 'src/**/*'],
       transformMixedEsModules: true,
+      requireReturnsDefault: 'preferred',
       defaultIsModuleExports: true,
+      dynamicRequireTargets: [
+        'node_modules/acorn-jsx/**/*.js'
+      ],
+      // Handle CommonJS named exports for veda-ui
+      namedExports: {
+        '@teamimpact/veda-ui': ['ReactQueryProvider', 'VedaUIProvider', 'DevseedUiThemeProvider', 'MapBlock', 'LegacyGlobalStyles', 'Chapter', 'Image', 'Figure', 'Caption', 'Prose', 'Block']
+      }
     }),
     
     // Compile TypeScript
@@ -58,15 +116,33 @@ export default {
       jsx: 'react-jsx',
     }),
     
-    // Transform with Babel using runtime helpers
+    // Transform with Babel to use runtime helpers everywhere (including bundled node_modules)
     babel({
       babelHelpers: 'runtime',
-      exclude: 'node_modules/**',
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      // Don't exclude anything - process all code
+      include: [
+        'src/**/*',
+        'node_modules/@mdxeditor/**/*',
+        'node_modules/@mdx-js/**/*',
+        'node_modules/acorn-jsx/**/*'
+      ],
       babelrc: false,
-      configFile: './babel.config.js',
-      // Only process our source files
-      include: ['src/**/*']
+      configFile: false,
+      presets: [
+        ['@babel/preset-env', {
+          targets: { esmodules: true },
+          modules: false
+        }]
+      ],
+      plugins: [
+        ['@babel/plugin-transform-runtime', {
+          corejs: false,
+          helpers: true,
+          regenerator: false,
+          useESModules: true
+        }]
+      ]
     }),
     
     // Handle JSON imports
@@ -82,57 +158,20 @@ export default {
     }),
   ],
   
-  // This is the critical part - mark EVERYTHING from node_modules as external
-  external: (id, parent, isResolved) => {
-    // Never externalize our source files
-    if (id.startsWith('./src') || id.startsWith('src/') || id.includes('/src/')) {
-      return false;
-    }
-    
-    // Always externalize node built-ins
-    if (id.startsWith('node:') || ['fs', 'path', 'os', 'url', 'util', 'stream', 'buffer'].includes(id)) {
-      return true;
-    }
-    
-    // Always externalize anything from node_modules
-    if (id.includes('node_modules')) {
-      return true;
-    }
-    
-    // Always externalize bare module specifiers (no relative path)
-    if (!id.startsWith('.') && !id.startsWith('/')) {
-      return true;
-    }
-    
-    // Externalize specific problematic packages even if accessed via relative paths
-    const problematicPackages = [
-      '@babel/runtime',
-      'react',
-      'react-dom',
-      'react/jsx-runtime',
-      'react/jsx-dev-runtime',
-      '@mdx-js',
-      '@mdxeditor',
-      'micromark',
-      'mdast',
-      'acorn',
-      'acorn-jsx',
-      '@lexical',
-      '@teamimpact',
-      '@trussworks',
-      '@devseed-ui',
-      '@heroicons',
-      'next-mdx-remote',
-      'sugar-high',
-      'gray-matter',
-      'styled-components',
-      'jotai'
-    ];
-    
-    if (problematicPackages.some(pkg => id.includes(pkg))) {
-      return true;
-    }
-    
-    return false;
-  },
+  // External only the absolute minimum - React and peer dependencies
+  external: [
+    'react',
+    'react-dom',
+    'react/jsx-runtime',
+    'react/jsx-dev-runtime',
+    '@babel/runtime',
+    '@teamimpact/veda-ui',
+    '@trussworks/react-uswds',
+    '@devseed-ui/theme-provider',
+    '@heroicons/react',
+    'next-mdx-remote',
+    'styled-components',
+    'jotai',
+    'react-router-dom'
+  ],
 };

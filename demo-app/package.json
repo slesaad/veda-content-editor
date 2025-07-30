@@ -1,0 +1,26 @@
+{
+  "name": "veda-editor-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@slesaad/veda-content-editor": "file:../",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@teamimpact/veda-ui": "^6.1.1",
+    "@trussworks/react-uswds": "^5.3.1",
+    "@devseed-ui/theme-provider": "^4.1.0",
+    "@heroicons/react": "^2.0.0",
+    "next-mdx-remote": "^4.4.1",
+    "styled-components": "^5.3.3",
+    "jotai": "^2.12.5",
+    "react-router-dom": "^6.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  }
+}

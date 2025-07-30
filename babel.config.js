@@ -15,7 +15,6 @@ export default {
     '@babel/preset-typescript'
   ],
   plugins: [
-    '@babel/plugin-proposal-class-properties',
     [
       '@babel/plugin-transform-runtime',
       {
