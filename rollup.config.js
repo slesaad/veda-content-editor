@@ -6,6 +6,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import json from '@rollup/plugin-json';
 import css from 'rollup-plugin-css-only';
 import postcss from 'rollup-plugin-postcss';
+// Removed unused alias plugin
 import { readFileSync } from 'fs';
 
 const packageJson = JSON.parse(readFileSync('./package-lib.json', 'utf-8'));
@@ -36,15 +37,28 @@ export default {
   ],
   plugins: [
     peerDepsExternal(),
+    // Remove alias plugin for acorn-jsx - let commonjs handle it
     resolve({
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss'],
       preferBuiltins: false,
       browser: true,
       dedupe: ['react', 'react-dom', 'styled-components'],
+      mainFields: ['module', 'main', 'browser'],
+      modulesOnly: false,
     }),
     commonjs({
       include: /node_modules/,
-      requireReturnsDefault: 'auto',
+      requireReturnsDefault: 'preferred',
+      transformMixedEsModules: true,
+      esmExternals: false,
+      defaultIsModuleExports: true,
+      // Handle packages that don't export properly
+      namedExports: {
+        'acorn-jsx': ['default'],
+        'micromark-extension-mdx-jsx': ['mdxJsx'],
+        'mdast-util-mdx-jsx': ['mdxJsxFromMarkdown', 'mdxJsxToMarkdown']
+      },
+      ignoreDynamicRequires: true,
     }),
     typescript({
       tsconfig: './tsconfig.lib.json',
@@ -56,23 +70,8 @@ export default {
       babelHelpers: 'runtime',
       exclude: 'node_modules/**',
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      presets: [
-        ['@babel/preset-env', { 
-          targets: { esmodules: true },
-          bugfixes: true,
-          modules: false
-        }],
-        '@babel/preset-react',
-        '@babel/preset-typescript'
-      ],
-      plugins: [
-        ['@babel/plugin-transform-runtime', {
-          corejs: false,
-          helpers: true,
-          regenerator: false,
-          useESModules: true
-        }]
-      ]
+      babelrc: true,
+      configFile: true,
     }),
     json(),
     postcss({
@@ -87,6 +86,8 @@ export default {
     'react',
     'react-dom',
     'react/jsx-runtime',
+    'os',
+    /@babel\/runtime/,
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
   ],

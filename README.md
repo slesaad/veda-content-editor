@@ -31,6 +31,24 @@ function App() {
 
 ## Important Notes
 
+### Version 0.1.7 - Critical Build Fixes
+This version fixes the critical runtime errors that made v0.1.0-0.1.6 unusable:
+
+**Fixed Issues:**
+1. **Babel Runtime Error**: Fixed "Cannot read properties of undefined (reading 'prototype')" by properly configuring Babel to use external runtime helpers instead of inline helpers
+2. **Module Import Error**: Fixed "The requested module 'acorn-jsx' does not provide an export named 'default'" by correctly handling CommonJS modules in the build process
+
+**Technical Changes:**
+- Updated `.babelrc` with proper `@babel/plugin-transform-runtime` configuration
+- Fixed `rollup.config.js` to handle CommonJS modules correctly with `requireReturnsDefault: 'preferred'`
+- Ensured `@babel/runtime` is marked as external dependency to prevent bundling
+- Removed problematic alias configuration for acorn-jsx
+- The package is now fully functional and can be imported without errors
+
+### Version 0.1.6
+- Attempted to fix acorn-jsx issue but both errors persisted
+- Added missing dependencies but build configuration was still incorrect
+
 ### Version 0.1.5
 - Fixed babel class inheritance helpers issue (no more `__proto__` errors)
 - Configured proper ESM output with babel runtime
