@@ -1,6 +1,6 @@
 {
   "name": "@slesaad/veda-content-editor",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "VEDA Content Editor - A React-based MDX editor component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -8,8 +8,9 @@
   "files": [
     "dist"
   ],
+  "type": "module",
   "scripts": {
-    "build:lib": "rollup -c",
+    "build:lib": "rollup -c rollup.config.mjs",
     "prepublishOnly": "npm run build:lib"
   },
   "peerDependencies": {
