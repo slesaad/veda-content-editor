@@ -15,5 +15,16 @@ export interface VEDAContentEditorProps {
   className?: string;
 }
 
+export interface DatasetWithContent {
+  metadata: {
+    id: string;
+    name: string;
+    description: string;
+    taxonomy?: any[];
+    layers?: any[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
 // Re-export the EditorPageProps from the main component
-export type { EditorPageProps } from '../VEDAContentEditor';
+export type { EditorPageProps } from "../VEDAContentEditor";

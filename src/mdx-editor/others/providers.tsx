@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import DataProvider from './store/providers/data';
-import VedaUIConfigProvider from './store/providers/veda-ui-config';
-import DevseedUIThemeProvider from './store/providers/theme';
+import React, { ReactNode } from "react";
+// import DataProvider from "./store/providers/data";
+// import { VedaUIConfigProvider } from "./store/providers/veda-ui-config";
+// import DevseedUIThemeProvider from "./store/providers/theme";
 
 interface DatasetMetadata {
   id: string;
@@ -16,15 +16,20 @@ interface ProviderProps {
 }
 
 export default function Providers({ datasets, children }: ProviderProps) {
+  // console.log("DevseedUIThemeProvider:", DevseedUIThemeProvider);
+  // console.log("VedaUIConfigProvider:", VedaUIConfigProvider);
+
   return (
-    <DevseedUIThemeProvider>
-      <VedaUIConfigProvider>
-        {datasets ? (
-          <DataProvider initialDatasets={datasets}>{children}</DataProvider>
-        ) : (
-          children
-        )}
-      </VedaUIConfigProvider>
-    </DevseedUIThemeProvider>
+    <>
+      {/* <DevseedUIThemeProvider>
+        <VedaUIConfigProvider> */}
+      {/* {datasets ? (
+            <DataProvider initialDatasets={datasets}>{children}</DataProvider>
+          ) : ( */}
+      {children}
+      {/* )} */}
+      {/* </VedaUIConfigProvider>
+      </DevseedUIThemeProvider> */}
+    </>
   );
 }

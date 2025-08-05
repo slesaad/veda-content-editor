@@ -1,4 +1,3 @@
-export const inputValidation = () => {};
 
 export const dateStringToregex = (format) => {
   const tokens = {

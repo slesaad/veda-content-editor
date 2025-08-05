@@ -1,6 +1,6 @@
-import { ProcessorPlugin } from '@mdxeditor/gurx'
 
-export const wrapNodesInBlockAndProse: ProcessorPlugin = () => {
+
+export const wrapNodesInBlockAndProse = () => {
   return (tree) => {
     tree.children = tree.children.map((node) => ({
       type: 'mdxJsxFlowElement',

@@ -27,7 +27,7 @@ import { reserializedMdxContent } from '../utils/reserializeMDast';
 import '@mdxeditor/editor/style.css';
 import './mdxeditor-overrides.css';
 
-import { scrollytellingButtonPlugin } from '../plugins/scrollytelling/scrollytellingButtonPlugin';
+
 import {
   InsertMapButton,
   // InsertLineGraph,

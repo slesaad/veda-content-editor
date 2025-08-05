@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { VEDAContentEditor } from '@slesaad/veda-content-editor'
+
 
 const initialContent = `# Hello from VEDA Editor
 
@@ -20,16 +21,16 @@ console.log('Hello, VEDA!')
 
 function App() {
   const [content, setContent] = useState(initialContent)
-  const [error, setError] = useState(null)
+  // const [error, setError] = useState(null)
 
   console.log('App component rendering...')
 
-  try {
-    return (
-      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h1>VEDA Content Editor Demo</h1>
-        
-        {error && (
+  // try {
+  return (
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+      <h1>VEDA Content Editor Demo</h1>
+
+      {/* {error && (
           <div style={{ 
             background: '#fee', 
             border: '1px solid #fcc', 
@@ -42,56 +43,56 @@ function App() {
               {error.stack}
             </pre>
           </div>
-        )}
+        )} */}
 
-        <div style={{ marginBottom: '20px' }}>
-          <p>Testing VEDA Content Editor v0.1.16</p>
-        </div>
-
-        <div style={{ border: '1px solid #ddd', borderRadius: '4px', minHeight: '400px' }}>
-          <VEDAContentEditor
-            value={content}
-            onChange={(newContent) => {
-              console.log('Content changed:', newContent)
-              setContent(newContent)
-            }}
-            placeholder="Start typing..."
-          />
-        </div>
-
-        <div style={{ marginTop: '20px' }}>
-          <h3>Current Content:</h3>
-          <pre style={{ 
-            background: '#f5f5f5', 
-            padding: '10px', 
-            borderRadius: '4px',
-            overflow: 'auto'
-          }}>
-            {content}
-          </pre>
-        </div>
+      <div style={{ marginBottom: '20px' }}>
+        <p>Testing VEDA Content Editor v0.1.16</p>
       </div>
-    )
-  } catch (err) {
-    console.error('Error rendering editor:', err)
-    setError(err)
-    return (
-      <div style={{ padding: '20px' }}>
-        <h1>VEDA Content Editor Demo - Error</h1>
-        <div style={{ 
-          background: '#fee', 
-          border: '1px solid #fcc', 
+
+      <div style={{ border: '1px solid #ddd', borderRadius: '4px', minHeight: '400px' }}>
+        <VEDAContentEditor
+          value={content}
+          onChange={(newContent) => {
+            console.log('Content changed:', newContent)
+            setContent(newContent)
+          }}
+          placeholder="Start typing..."
+        />
+      </div>
+
+      <div style={{ marginTop: '20px' }}>
+        <h3>Current Content:</h3>
+        <pre style={{
+          background: '#f5f5f5',
           padding: '10px',
-          borderRadius: '4px'
+          borderRadius: '4px',
+          overflow: 'auto'
         }}>
-          <strong>Runtime Error:</strong> {err.message}
-          <pre style={{ fontSize: '12px', marginTop: '10px' }}>
-            {err.stack}
-          </pre>
-        </div>
+          {content}
+        </pre>
       </div>
-    )
-  }
+    </div>
+  )
+  // } catch (err) {
+  //   console.error('Error rendering editor:', err)
+  //   setError(err)
+  //   return (
+  //     <div style={{ padding: '20px' }}>
+  //       <h1>VEDA Content Editor Demo - Error</h1>
+  //       <div style={{ 
+  //         background: '#fee', 
+  //         border: '1px solid #fcc', 
+  //         padding: '10px',
+  //         borderRadius: '4px'
+  //       }}>
+  //         <strong>Runtime Error:</strong> {err.message}
+  //         <pre style={{ fontSize: '12px', marginTop: '10px' }}>
+  //           {err.stack}
+  //         </pre>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 }
 
 export default App
