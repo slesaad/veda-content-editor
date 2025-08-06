@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-import { LexicalNode } from "lexical";
+import type { LexicalNode } from "lexical";
 import { Button } from "@trussworks/react-uswds";
 import { ChartContextProvider, useChartContext } from "../utils/ChartContext";
 
 import { DEFAULT_CHART_PROPS, ClientChartBlock } from "./ChartPreview";
 import { InputField } from "../utils/CreateInterface";
-import { ChartProps } from "./types";
+import type { ChartProps } from "./types";
 import { useMdastNodeUpdater } from "@mdxeditor/editor";
 
 export interface EditorChartProps extends ChartProps {

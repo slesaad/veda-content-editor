@@ -1,24 +1,21 @@
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
-import dts from 'vite-plugin-dts';
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+import dts from "vite-plugin-dts";
 
-import path from 'path';
+import path from "path";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), "");
 
   return {
     build: {
-      plugins: [
-        react(),
-      ],
+      plugins: [react()],
       lib: {
-
-        entry: resolve(__dirname, 'src/lib/index.ts'),
-        name: 'VEDAContentEditor',
-        fileName: (format) => `index.${format === 'es' ? 'mjs' : 'js'}`,
-        formats: ['es', 'cjs'],
+        entry: resolve(__dirname, "src/lib/index.ts"),
+        name: "VEDAContentEditor",
+        fileName: (format) => `index.${format === "es" ? "mjs" : "js"}`,
+        formats: ["es", "cjs"],
       },
       rollupOptions: {
         external: [
@@ -30,10 +27,9 @@ export default defineConfig(({ mode }) => {
           "styled-components",
           /^@devseed-ui\/.*/,
           /^@teamimpact\/.*/,
-
         ],
         output: {
-          exports: 'named',
+          exports: "named",
           globals: {
             react: "React",
             "react-dom": "ReactDOM",
@@ -45,7 +41,7 @@ export default defineConfig(({ mode }) => {
       },
       sourcemap: true,
     },
-  
+
     css: {
       preprocessorOptions: {
         scss: {
@@ -68,26 +64,27 @@ export default defineConfig(({ mode }) => {
         // ),
       },
     },
-  
+
     // define: {
     //   'process.env': JSON.stringify(env),
     //   global: 'globalThis',
     // },
-    // optimizeDeps: {
-    //       include: [
-    //         'buffer', 
-    //         'process', 
-    //         'stream-browserify',
-    //         'util',
-    //       ],
-    //       force: true,
-    //       esbuildOptions: {
-    //         define: {
-    //           global: 'globalThis',
-    //           Buffer: 'Buffer',
-    //         },
-    //       },
-    //     },
+    optimizeDeps: {
+      include: [
+        "buffer",
+        "process",
+        "stream-browserify",
+        "util",
+        "@codesandbox",
+        "@radix-ui",
+      ],
+      force: true,
+      esbuildOptions: {
+        define: {
+          global: "globalThis",
+          Buffer: "Buffer",
+        },
+      },
+    },
   };
-
 });
