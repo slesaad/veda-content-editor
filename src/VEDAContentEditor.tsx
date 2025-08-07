@@ -15,6 +15,16 @@ import { SimpleMDXPreview } from "./mdx-editor/components/MDXPreview";
 
 // Use a stable key to preserve the editor state
 const EDITOR_KEY = "stable-mdx-editor-instance";
+// const MDXEditorEnhanced = React.lazy(() =>
+//   import("./mdx-editor/components/MDXEditor").then((module) => ({
+//     default: module.MDXEditorEnhanced,
+//   }))
+// );
+// const SimpleMDXPreview = React.lazy(() =>
+//   import("./mdx-editor/components/MDXPreview").then((module) => ({
+//     default: module.SimpleMDXPreview,
+//   }))
+// );
 
 const initialContent = `# Welcome to the MDX Editor
 

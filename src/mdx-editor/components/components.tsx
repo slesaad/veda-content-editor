@@ -41,5 +41,5 @@ export const BlockNode: React.FC<BlockNodeProps> = ({ children }) => (
 export const customComponents = {
   MyLeaf,
   Marker,
-  BlockNode,
+  // BlockNode,
 };

@@ -8,7 +8,7 @@ import {
 } from '@mdxeditor/editor';
 import { TwoColumnEditorWrapper } from './TwoColumnEditor';
 import MapEditorWrapper from './MapEditor';
-// import ChartEditorWrapper from './ChartEditor';
+import ChartEditorWrapper from './ChartEditor';
 import { allAvailableDatasets } from './alldatasets';
 
 export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
@@ -25,7 +25,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
     name: 'Block',
     kind: 'flow',
-    source: './components', // Adjust the path
+    source: '@teamimpact/veda-ui', // Adjust the path
     hasChildren: true,
     props: [],
     Editor: GenericJsxEditor,
@@ -49,7 +49,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
     name: 'Prose',
     kind: 'flow',
-    source: './components', // Adjust the path
+    source: '@teamimpact/veda-ui', // Adjust the path
     hasChildren: true,
     props: [{ name: 'children', type: 'expression' }],
     Editor: GenericJsxEditor,
@@ -99,40 +99,40 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   );
 },
   },
-  // {
-  //   name: 'Chart',
-  //   kind: 'text',
-  //   source: '@teamimpact/veda-ui',
-  //   props: [
-  //     { name: 'dataPath', type: 'string' },
-  //     { name: 'dateFormat', type: 'string' },
-  //     { name: 'idKey', type: 'string' },
-  //     { name: 'xKey', type: 'string' },
-  //     { name: 'yKey', type: 'string' },
-  //     { name: 'yAxisLabel', type: 'string' },
-  //     { name: 'xAxisLabel', type: 'string' },
-  //     { name: 'highlightStart', type: 'string' },
-  //     { name: 'highlightEnd', type: 'string' },
-  //     { name: 'highlightLabel', type: 'string' },
-  //     { name: 'availableDomain', type: 'string' },
-  //     { name: 'altTitle', type: 'string' },
-  //     { name: 'colorScheme', type: 'string' },
-  //     { name: 'colors', type: 'string' },
-  //     { name: 'altDesc', type: 'string' },
-  //   ],
-  //   hasChildren: false,
-  //  Editor: (props) => {
-  //   return (
-  //   <>
-  //     <ChartEditorWrapper
-  //       {...props}
-  //       allAvailableDatasets={allAvailableDatasets}
-  //       allAvailableCsvs={availableCsvs} // Add this line
-  //     />
-  //   </>
-  // );
-  //   },
-  // },
+  {
+    name: 'Chart',
+    kind: 'text',
+    source: '@teamimpact/veda-ui',
+    props: [
+      { name: 'dataPath', type: 'string' },
+      { name: 'dateFormat', type: 'string' },
+      { name: 'idKey', type: 'string' },
+      { name: 'xKey', type: 'string' },
+      { name: 'yKey', type: 'string' },
+      { name: 'yAxisLabel', type: 'string' },
+      { name: 'xAxisLabel', type: 'string' },
+      { name: 'highlightStart', type: 'string' },
+      { name: 'highlightEnd', type: 'string' },
+      { name: 'highlightLabel', type: 'string' },
+      { name: 'availableDomain', type: 'string' },
+      { name: 'altTitle', type: 'string' },
+      { name: 'colorScheme', type: 'string' },
+      { name: 'colors', type: 'string' },
+      { name: 'altDesc', type: 'string' },
+    ],
+    hasChildren: false,
+   Editor: (props) => {
+    return (
+    <>
+      <ChartEditorWrapper
+        {...props}
+        allAvailableDatasets={allAvailableDatasets}
+        // allAvailableCsvs={availableCsvs} // Add this line
+      />
+    </>
+  );
+    },
+  },
 ];
 
 export const CalloutDirectiveDescriptor: DirectiveDescriptor = {

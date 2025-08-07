@@ -1,8 +1,8 @@
 import React from "react";
 import { transformToVedaData } from "../utils/data";
-// import DataProvider from "../others/store/providers/data";
-// import VedaUIConfigProvider from "../others/store/providers/veda-ui-config";
-// import DevseedUIThemeProvider from "../others/store/providers/theme";
+import DataProvider from "../others/store/providers/data";
+import VedaUIConfigProvider from "../others/store/providers/veda-ui-config";
+import DevseedUIThemeProvider from "../others/store/providers/theme";
 // import { DatasetWithContent } from "../utils/mdx";
 import { Chart } from "@teamimpact/veda-ui";
 // const Chart = dynamic(() => import('@lib').then((mod) => mod.Chart), {
@@ -17,16 +17,16 @@ export function ClientChartBlock(props: { allAvailableDatasets?: any[] }) {
   const transformed = transformToVedaData(datasetsToUse as any);
 
   return (
-    // <DevseedUIThemeProvider>
-    //   <VedaUIConfigProvider>
-    //     <DataProvider initialDatasets={datasetsToUse}>
-    //       <div className="relative w-full h-[250px]">
-            // <Chart {...props} datasets={transformed} />
-            <>THIS SI ClientChartBlock</>
-    //       </div>
-    //     </DataProvider>
-    //   </VedaUIConfigProvider>
-    // </DevseedUIThemeProvider>
+    <DevseedUIThemeProvider>
+      <VedaUIConfigProvider>
+        <DataProvider initialDatasets={datasetsToUse}>
+          <div className="relative w-full h-[250px]">
+            <Chart {...props} datasets={transformed} />
+
+          </div>
+        </DataProvider>
+      </VedaUIConfigProvider>
+    </DevseedUIThemeProvider>
   );
 }
 

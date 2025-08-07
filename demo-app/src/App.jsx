@@ -1,5 +1,7 @@
 import React, { Suspense, useState } from 'react'
 import { VEDAContentEditor } from '@slesaad/veda-content-editor'
+// import '@slesaad/veda-content-editor/dist/styles.css';
+import '@mdxeditor/editor/style.css';
 
 
 const initialContent = `# Hello from VEDA Editor
