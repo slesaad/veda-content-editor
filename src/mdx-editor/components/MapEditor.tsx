@@ -8,7 +8,7 @@ import { useMdastNodeUpdater } from "@mdxeditor/editor";
 import { DEFAULT_MAP_PROPS } from "./ToolbarComponents";
 import { InputField } from "../utils/CreateInterface";
 import { ClientMapBlock } from "./MapPreview";
-import { MapEditorNode } from "../../mdx-plugins/nodes/MapNodes";
+import { MapContextNode, MapEditorNode } from "../../mdx-plugins/nodes/MapNodes";
 
 interface DatasetWithContent {
   metadata: {
@@ -27,7 +27,7 @@ interface EditorMapProps extends MapProps {
 }
 
 // Create a placeholder node type that satisfies the LexicalNode interface
-const createPlaceholderNode = (): LexicalNode & {
+const createPlaceholderNode = (): MapEditorNode & {
   setProps?: (props: Partial<EditorMapProps>) => void;
 } => {
   return {
@@ -37,7 +37,7 @@ const createPlaceholderNode = (): LexicalNode & {
     __prev: null,
     __next: null,
     setProps: () => console.warn("setProps called on a placeholder node"),
-  } as unknown as LexicalNode & {
+  } as unknown as MapEditorNode & {
     setProps?: (props: Partial<EditorMapProps>) => void;
   };
 };
@@ -47,7 +47,7 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
   const contextValue = useMapContext();
   const [isEditing, setIsEditing] = useState(true);
   const initialMapProps = () => {
-    const generatedProps = props.props.mdastNode.attributes.reduce(
+    const generatedProps = props.mdastNode.attributes.reduce(
       (acc, item) => {
         acc[item.name] = item.value;
         return acc;
@@ -161,7 +161,7 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
       if (contextValue?.parentEditor && contextValue?.lexicalNode) {
         contextValue.parentEditor.update(() => {
           try {
-            const node = contextValue.lexicalNode as LexicalNode & {
+            const node = contextValue.lexicalNode as MapContextNode & {
               setProps?: (props: Partial<EditorMapProps>) => void;
             };
             if (node?.setProps) {

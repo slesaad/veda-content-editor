@@ -1,6 +1,7 @@
 import React from 'react';
 // import EditorPage from './VEDAContentEditor';
 import { allAvailableDatasets } from './mdx-editor/components/alldatasets';
+import './styles/uswds.scss'
 
 export default function App() {
   console.log("huhuhuh")

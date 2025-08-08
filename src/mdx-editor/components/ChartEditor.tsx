@@ -1,8 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-import { LexicalNode } from "lexical";
 import { Button } from "@trussworks/react-uswds";
 import { ChartContextProvider, useChartContext } from "../utils/ChartContext";
 
@@ -10,13 +8,17 @@ import { DEFAULT_CHART_PROPS, ClientChartBlock } from "./ChartPreview";
 import { InputField } from "../utils/CreateInterface";
 import { ChartProps } from "./types";
 import { useMdastNodeUpdater } from "@mdxeditor/editor";
+import {
+  ChartEditorNode,
+  ChartContextNode,
+} from "../../mdx-plugins/nodes/ChartNodes";
 
 export interface EditorChartProps extends ChartProps {
-  node?: LexicalNode & { setProps?: (props: Partial<ChartProps>) => void };
+  node?: ChartEditorNode & { setProps?: (props: Partial<ChartProps>) => void };
 }
 
 // Create a placeholder node type that satisfies the LexicalNode interface
-const createPlaceholderNode = (): LexicalNode & {
+const createPlaceholderNode = (): ChartEditorNode & {
   setProps?: (props: Partial<EditorChartProps>) => void;
 } => {
   return {
@@ -26,7 +28,7 @@ const createPlaceholderNode = (): LexicalNode & {
     __prev: null,
     __next: null,
     setProps: () => console.warn("setProps called on a placeholder node"),
-  } as unknown as LexicalNode & {
+  } as unknown as ChartEditorNode & {
     setProps?: (props: Partial<EditorChartProps>) => void;
   };
 };
@@ -119,7 +121,7 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
       if (contextValue?.parentEditor && contextValue?.lexicalNode) {
         contextValue.parentEditor.update(() => {
           try {
-            const node = contextValue.lexicalNode as LexicalNode & {
+            const node = contextValue.lexicalNode as ChartContextNode & {
               setProps?: (props: Partial<EditorChartProps>) => void;
             };
             if (node?.setProps) {

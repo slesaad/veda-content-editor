@@ -1,7 +1,8 @@
 import React, { Suspense, useState } from 'react'
-import { VEDAContentEditor } from '@slesaad/veda-content-editor'
-// import '@slesaad/veda-content-editor/dist/styles.css';
+import { VEDAContentEditor } from 'dev-veda-content-editor'
+// import { VEDAContentEditor } from '@slesaad/veda-content-editor'
 import '@mdxeditor/editor/style.css';
+import '@trussworks/react-uswds/lib/uswds.css';
 
 
 const initialContent = `# Hello from VEDA Editor

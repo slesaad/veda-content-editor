@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
           "react",
           "react-dom",
           "react/jsx-runtime",
-          "node_modules",
           "focus-trap-react",
           "styled-components",
           /^@devseed-ui\/.*/,
@@ -44,28 +43,15 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: "legacy",
           includePaths: [
-            "node_modules/@uswds/uswds/packages, node_modules/@mdxeditor/editor/style.css",
+            "node_modules/@uswds/uswds/packages", 
+            "node_modules/@mdxeditor/editor/style.css", 
+            'node_modules/@uswds/uswds',
+         'node_modules/@uswds/uswds/dist',
+         'node_modules/@uswds/uswds/packages',,
           ],
         },
       },
     },
-    resolve: {
-      alias: {
-        // '@teamimpact/veda-ui': path.resolve(
-        //   __dirname,
-        //   'node_modules/@teamimpact/veda-ui/lib/main.js'
-        // ),
-        // '@"@devseed-ui/': path.resolve(
-        //   __dirname,
-        //   'node_modules/@teamimpact/veda-ui/lib/main.js'
-        // ),
-      },
-    },
-
-    // define: {
-    //   'process.env': JSON.stringify(env),
-    //   global: 'globalThis',
-    // },
     optimizeDeps: {
       include: [
         "buffer",

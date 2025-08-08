@@ -6,14 +6,17 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-// import Providers from "./mdx-editor/others/providers";
+import Providers from "./mdx-editor/others/providers";
+import '@trussworks/react-uswds/lib/uswds.css';
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
-// import { LegacyGlobalStyles } from "@teamimpact/veda-ui";
+import { LegacyGlobalStyles } from "@teamimpact/veda-ui";
 import { MDXEditorEnhanced } from "./mdx-editor/components/MDXEditor";
 import { SimpleMDXPreview } from "./mdx-editor/components/MDXPreview";
+import '@teamimpact/veda-ui/lib/main.css';
 
-// Use a stable key to preserve the editor state
+// Use a st    // src/main.js or src/main.ts
+
 const EDITOR_KEY = "stable-mdx-editor-instance";
 // const MDXEditorEnhanced = React.lazy(() =>
 //   import("./mdx-editor/components/MDXEditor").then((module) => ({
@@ -53,6 +56,13 @@ export default function EditorPage({
   onChange,
   className,
 }: EditorPageProps) {
+  const initialConfig = {
+    namespace: "MyEditor", // Unique namespace for this editor instance
+    onError: (error: Error) => {
+      console.error("Lexical editor error:", error);
+    },
+    // ... other Lexical configuration options if needed
+  };
   const [mdxContent, setMdxContent] = useState(
     customInitialContent || initialContent
   );
@@ -98,8 +108,8 @@ export default function EditorPage({
   return (
     <div className="container mx-auto p-4 max-w-5xl min-h-screen bg-gray-50">
       {/* Custom Tab Buttons */}
-      {/* <Providers datasets={allAvailableDatasets}> */}
-      {/* <LegacyGlobalStyles /> */}
+      {/* <Providers datasets={allAvailableDatasets}>
+      <LegacyGlobalStyles /> */}
       <div className="flex space-x-4 mb-4">
         <button
           onClick={() => handleTabChange(0)}
@@ -154,13 +164,13 @@ export default function EditorPage({
             >
               <LexicalComposer initialConfig={initialConfig}>
                 {/* THROWS ERROR */}
-                <MDXEditorEnhanced
+                 <MDXEditorEnhanced
                   key={EDITOR_KEY}
                   markdown={mdxContent}
                   onChange={handleContentChange}
                   editorMounted={editorMounted}
                   previewMDAST={setReserializedMdxContent}
-                />
+                /> 
               </LexicalComposer>
             </Suspense>
           )}
@@ -202,10 +212,4 @@ export default function EditorPage({
   );
   // return<div>CAN YOU SEE ME TEST 3</div>
 }
-const initialConfig = {
-  namespace: "MyEditor", // Unique namespace for this editor instance
-  onError: (error: Error) => {
-    console.error("Lexical editor error:", error);
-  },
-  // ... other Lexical configuration options if needed
-};
+

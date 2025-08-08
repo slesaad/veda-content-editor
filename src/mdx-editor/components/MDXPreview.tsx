@@ -23,7 +23,6 @@ import Providers from "../others/providers";
 // Correctly import the default export from mdx-preview-map with error handling
 
 import { ClientMapBlock } from "./MapPreview";
-console.log("Imported Block:", Block);
 
 const MapWrapper = (props) => {
   try {

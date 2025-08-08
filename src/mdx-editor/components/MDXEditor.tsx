@@ -25,11 +25,11 @@ import {
 import { reserializedMdxContent } from "../utils/reserializeMDast";
 
 import "@mdxeditor/editor/style.css";
-import "./mdxeditor-overrides.css";
+import "./mdxeditor-overrides.scss";
 
 import {
   InsertMapButton,
-  // InsertLineGraph,
+  InsertLineGraph,
   InsertTwoColumnButton,
   InsertSectionBreak,
 } from "./ToolbarComponents";
@@ -46,14 +46,6 @@ interface MDXEditorWrapperProps {
   markdown: string;
   onChange: (content: string) => void;
 }
-
-const initialConfig = {
-  namespace: "MyEditor", // Unique namespace for this editor instance
-  onError: (error) => {
-    console.error("Lexical editor error:", error);
-  },
-  // ... other Lexical configuration options if needed
-};
 
 export function MDXEditorEnhanced({ markdown, onChange, previewMDAST }: any) {
   const editorRef = useRef(null);
@@ -155,7 +147,7 @@ export function MDXEditorEnhanced({ markdown, onChange, previewMDAST }: any) {
                 </div>
                 <div className="grid-row padding-y-1">
                   <InsertMapButton />
-                  {/* <InsertLineGraph /> */}
+                  <InsertLineGraph />
                   <InsertTwoColumnButton />
                   <InsertSectionBreak />
                 </div>
