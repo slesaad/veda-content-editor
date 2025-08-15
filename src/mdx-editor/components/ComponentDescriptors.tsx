@@ -49,7 +49,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
     name: 'Prose',
     kind: 'flow',
-    source: '@teamimpact/veda-ui', // Adjust the path
+    source: './components', // Adjust the path
     hasChildren: true,
     props: [{ name: 'children', type: 'expression' }],
     Editor: GenericJsxEditor,
@@ -73,7 +73,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
     name: 'Map',
     kind: 'text',
-    source: '@teamimpact/veda-ui',
+    source: './components',
     props: [
       { name: 'center', type: 'string' },
       { name: 'zoom', type: 'string' },
@@ -102,7 +102,7 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
     name: 'Chart',
     kind: 'text',
-    source: '@teamimpact/veda-ui',
+    source: './components',
     props: [
       { name: 'dataPath', type: 'string' },
       { name: 'dateFormat', type: 'string' },

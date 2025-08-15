@@ -29,8 +29,6 @@ function App() {
   console.log('App component rendering...')
   // const VEDAContentEditor = React.lazy(() => import('@slesaad/veda-content-editor').then(module => ({ default: module.VEDAContentEditor })));
 
-
-
   try {
     return (
       <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>

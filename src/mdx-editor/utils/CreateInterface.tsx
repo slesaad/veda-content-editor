@@ -12,6 +12,7 @@ import {
   handleMapDateValidation,
   handleMapArrayValidation,
   handleChartDateValidation,
+  handleDataPathValidation,
 } from "./inputValidation";
 
 interface FieldProps {
@@ -92,7 +93,6 @@ const setInput = (props) => {
           }
           {...checkRequired(isRequired, value)}
         >
-          <option value="">- Select option -</option>
           {options.map((option) => {
             // Check if option is a string or an object with value/label
             const value = typeof option === "object" ? option.value : option;
@@ -129,7 +129,8 @@ const setInput = (props) => {
       setDraftInputs({ ...draftInputs, draftHighlightEnd: draft });
     }
     clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async () => {
+
       if (validateAgainst) {
         if (
           propName === "dateFormat" ||
@@ -164,6 +165,15 @@ const setInput = (props) => {
             draft,
             onChange,
             componentProps
+          );
+          } else if (validateAgainst === "dataPath") {
+          await handleDataPathValidation(
+            propName,
+            draft,
+            onChange,
+            componentProps,
+            setInputErrors,
+            inputErrors
           );
         } else {
           onChange({ ...componentProps, [propName]: draft });

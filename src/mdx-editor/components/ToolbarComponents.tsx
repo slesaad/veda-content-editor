@@ -99,7 +99,7 @@ export const InsertLineGraph = (props) => {
   return (
     <Button
       onClick={handleClick}
-      title='Insert Map'
+      title='Insert Chart'
       className='text-sm display-flex flex-align-center padding-1'
     >
       <Icon.Insights className='margin-right-05 width-3 height-3' />

@@ -12,7 +12,7 @@ import { Chart } from "@teamimpact/veda-ui";
 //   ),
 // });
 
-export function ClientChartBlock(props: { allAvailableDatasets?: any[] }) {
+export function ClientChartBlock(props) {
   const datasetsToUse = props.allAvailableDatasets || [];
   const transformed = transformToVedaData(datasetsToUse as any);
 
@@ -22,7 +22,6 @@ export function ClientChartBlock(props: { allAvailableDatasets?: any[] }) {
         <DataProvider initialDatasets={datasetsToUse}>
           <div className="relative w-full h-[250px]">
             <Chart {...props} datasets={transformed} />
-
           </div>
         </DataProvider>
       </VedaUIConfigProvider>
@@ -34,7 +33,7 @@ export default ClientChartBlock;
 
 // Default Chart props
 export const DEFAULT_CHART_PROPS = {
-  dataPath: "/charts/story/hurricane-maria-ida-chart1.csv",
+  dataPath: "/assets/csv/hurricane-maria-ida-chart1.csv",
   dateFormat: "%m/%Y",
   idKey: "Zip",
   xKey: "Month",

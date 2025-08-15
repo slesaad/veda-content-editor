@@ -12,6 +12,7 @@ import {
   ChartEditorNode,
   ChartContextNode,
 } from "../../mdx-plugins/nodes/ChartNodes";
+import CSVReader from "../utils/csvParse";
 
 export interface EditorChartProps extends ChartProps {
   node?: ChartEditorNode & { setProps?: (props: Partial<ChartProps>) => void };
@@ -34,7 +35,12 @@ const createPlaceholderNode = (): ChartEditorNode & {
 };
 
 const interfaceList = [
-  { fieldName: "Data Path", propName: "dataPath", isRequired: true },
+  {
+    fieldName: "Data Path",
+    propName: "dataPath",
+    isRequired: true,
+    validateAgainst: "dataPath",
+  },
   {
     fieldName: "Date Format",
     propName: "dateFormat",
@@ -76,20 +82,6 @@ const interfaceList = [
   },
 ];
 
-// Import the actual map component for live preview
-// const ClientChartBlock = dynamic(
-//   () => import("./ChartPreview").then((mod) => mod.ClientChartBlock),
-//   {
-//     ssr: false,
-//     loading: () => (
-//       <div className="h-[180px] flex items-center justify-center bg-blue-50 ">
-//         <div className="text-blue-500">Loading Chart preview...</div>
-//       </div>
-//     ),
-//   }
-// );
-
-// Map editor component that includes both preview and editable properties
 const ChartEditorWithPreview: React.FC<any> = (props) => {
   const { allAvailableDatasets, allAvailableCsvs } = props; // Add allAvailableCsvs
   const updateMdastNode = useMdastNodeUpdater();
@@ -101,11 +93,16 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
 
   const initialChartProps = () => {
     const { dataPath, dateFormat, idKey, xKey, yKey } = props;
+
     if (dataPath && dateFormat && idKey && xKey && yKey) {
-      return { ...props };
+      return { ...props, csvKeyOptions: [] };
     }
-    return { ...DEFAULT_CHART_PROPS };
+    return {
+      ...DEFAULT_CHART_PROPS,
+      csvKeyOptions: [],
+    };
   };
+
   const [chartProps, setChartProps] = useState(initialChartProps());
   const [draftInputs, setDraftInputs] = useState({
     draftDateFormat: chartProps.dateFormat,
@@ -116,6 +113,7 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
     highlightStart: false,
     highlightEnd: false,
   });
+
   const updateProps = () => {
     try {
       if (contextValue?.parentEditor && contextValue?.lexicalNode) {
@@ -140,6 +138,7 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
   };
 
   // Update lexical node when any property changes
+
   useEffect(() => {
     updateProps();
 
@@ -151,6 +150,28 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
     updateMdastNode({ ...mdastNode, attributes: alignProps });
   }, [chartProps]);
 
+  useEffect(() => {
+    // This assumes CSVReader is async and returns a promise with the keys.
+    // This is the correct way to handle data fetching in a component.
+    const fetchCsvKeys = async () => {
+      if (chartProps.dataPath) {
+        try {
+          const keys = await CSVReader(chartProps.dataPath);
+          setChartProps((prevProps) => ({ ...prevProps, csvKeyOptions: keys }));
+        } catch (error) {
+          console.error(
+            `Failed to read CSV data from ${chartProps.dataPath}:`,
+            error
+          );
+          setChartProps((prevProps) => ({ ...prevProps, csvKeyOptions: [] }));
+        }
+      }
+    };
+
+    fetchCsvKeys();
+  }, [chartProps.dataPath]);
+
+  console.log("chartProps", chartProps);
   return (
     <div className=" border-05 border-primary rounded-lg overflow-hidden shadow-sm bg-white">
       <div className="flex flex-col">
@@ -194,13 +215,13 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
             </Button>
           </div>
         </div>
-
         <div className="relative">
           <div>
             <ClientChartBlock
               {...chartProps}
-              allAvailableDatasets={allAvailableDatasets}
+              // allAvailableDatasets={allAvailableDatasets}
             />
+            {/* ClientChartBlock */}
           </div>
           <div>
             <figcaption className="text-gray-30 flex">

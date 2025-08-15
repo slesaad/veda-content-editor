@@ -1,21 +1,20 @@
-
 export const dateStringToregex = (format) => {
   const tokens = {
-    '%d': '(0[1-9]|[12][0-9]|3[01])',
-    '%m': '(0[1-9]|1[0-2])',
-    '%Y': '\\d{4}',
-    '%y': '\\d{2}',
-    '%H': '([01][0-9]|2[0-3])',
-    '%M': '([0-5][0-9])',
-    '%S': '([0-5][0-9])',
+    "%d": "(0[1-9]|[12][0-9]|3[01])",
+    "%m": "(0[1-9]|1[0-2])",
+    "%Y": "\\d{4}",
+    "%y": "\\d{2}",
+    "%H": "([01][0-9]|2[0-3])",
+    "%M": "([0-5][0-9])",
+    "%S": "([0-5][0-9])",
   };
 
-  const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  let pattern = '';
+  let pattern = "";
 
   for (let i = 0; i < format.length; i++) {
-    if (format[i] === '%' && i < format.length - 1) {
+    if (format[i] === "%" && i < format.length - 1) {
       const directive = format[i] + format[i + 1];
       pattern += tokens[directive] || escape(directive); // unknown: treat literally
       i++; // skip the directive's second char
@@ -41,18 +40,18 @@ export const handleChartDateValidation = (
   inputErrors,
   draft,
   onChange,
-  chartProps,
+  chartProps
 ) => {
-  if (propName === 'highlightStart' || propName === 'highlightEnd') {
+  if (propName === "highlightStart" || propName === "highlightEnd") {
     if (dateFormatValidation(draftInputs.draftDateFormat, draft) === false) {
       setInputErrors({
         highlightStart: dateFormatValidation(
           draftInputs.draftDateFormat,
-          draftInputs.draftHighlightStart,
+          draftInputs.draftHighlightStart
         ),
         highlightEnd: dateFormatValidation(
           draftInputs.draftDateFormat,
-          draftInputs.draftHighlightEnd,
+          draftInputs.draftHighlightEnd
         ),
       });
       if (
@@ -70,15 +69,15 @@ export const handleChartDateValidation = (
       setInputErrors({
         highlightStart: dateFormatValidation(
           draftInputs.draftDateFormat,
-          draftInputs.draftHighlightStart,
+          draftInputs.draftHighlightStart
         ),
         highlightEnd: dateFormatValidation(
           draftInputs.draftDateFormat,
-          draftInputs.draftHighlightEnd,
+          draftInputs.draftHighlightEnd
         ),
       });
     }
-  } else if (propName === 'dateFormat') {
+  } else if (propName === "dateFormat") {
     setInputErrors({
       highlightStart: dateFormatValidation(draft, chartProps.highlightStart),
       highlightEnd: dateFormatValidation(draft, chartProps.highlightEnd),
@@ -102,11 +101,11 @@ export const handleMapDateValidation = (
   setInputErrors,
   draft,
   onChange,
-  componentProps,
+  componentProps
 ) => {
   if (
     dateFormatValidation(draftInputs.defaultDateFormat, draft) === false ||
-    draft === ''
+    draft === ""
   ) {
     setInputErrors({ ...inputErrors, [propName]: false });
     onChange({ ...componentProps, [propName]: draft });
@@ -122,14 +121,14 @@ export const handleMapArrayValidation = (
   setInputErrors,
   draft,
   onChange,
-  componentProps,
+  componentProps
 ) => {
   const numberPattern =
     /^\[[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?(?:,\s*[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?)*\]$/;
   //This regex checks that the input is wrapped in [...]
   //Checks for no trailing decimal points ex: -91.
   //Checks that there is no leading 0 unless followed by a . ex 0.12 or 0 are acceptable
-  const cleanedDraft = draft.replace(/\s/g, '');
+  const cleanedDraft = draft.replace(/\s/g, "");
   if (numberPattern.test(cleanedDraft)) {
     const parsedValues = JSON.parse(cleanedDraft);
     const checkLong = (long) => (long <= 180 && long >= -180 ? true : false);
@@ -142,6 +141,43 @@ export const handleMapArrayValidation = (
       setInputErrors({ ...inputErrors, [propName]: true });
     }
   } else {
+    setInputErrors({ ...inputErrors, [propName]: true });
+  }
+};
+
+export const handleDataPathValidation = async (
+  propName: string,
+  draft: string,
+  onChange: (props: any) => void,
+  componentProps: any,
+  setInputErrors: (errors: any) => void,
+  inputErrors: any
+) => {
+  // First, check if the draft is a valid URL and points to a .csv file.
+  try {
+    const url = new URL(draft);
+    if (!url.pathname.toLowerCase().endsWith(".csv")) {
+      // Not a .csv file
+      setInputErrors({ ...inputErrors, [propName]: true });
+      return;
+    }
+  } catch (error) {
+    // Not a valid URL format, which also handles empty/null draft values.
+    setInputErrors({ ...inputErrors, [propName]: true });
+    return;
+  }
+
+  try {
+    const response = await fetch(draft, { method: "HEAD" });
+    console.log("draft", draft);
+    if (response.ok) {
+      setInputErrors({ ...inputErrors, [propName]: false });
+      onChange({ ...componentProps, [propName]: draft });
+    } else {
+      setInputErrors({ ...inputErrors, [propName]: true });
+    }
+  } catch (error) {
+    console.error("Error validating data path:", error);
     setInputErrors({ ...inputErrors, [propName]: true });
   }
 };
