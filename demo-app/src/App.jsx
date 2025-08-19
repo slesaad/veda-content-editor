@@ -50,7 +50,7 @@ function App() {
         )}
 
         <div style={{ marginBottom: '20px' }}>
-          <p>Testing VEDA Content Editor v0.1.16</p>
+          <p>Testing VEDA Content Editor v0.1.18</p>
         </div>
 
         <div style={{ border: '1px solid #ddd', borderRadius: '4px', minHeight: '400px' }}>

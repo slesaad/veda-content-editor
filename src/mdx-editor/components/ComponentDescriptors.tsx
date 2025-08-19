@@ -1,144 +1,144 @@
-import React from 'react';
+import React from "react";
 
 import {
   DirectiveDescriptor,
   GenericDirectiveEditor,
   GenericJsxEditor,
   JsxComponentDescriptor,
-} from '@mdxeditor/editor';
-import { TwoColumnEditorWrapper } from './TwoColumnEditor';
-import MapEditorWrapper from './MapEditor';
-import ChartEditorWrapper from './ChartEditor';
-import { allAvailableDatasets } from './alldatasets';
+} from "@mdxeditor/editor";
+import { TwoColumnEditorWrapper } from "./TwoColumnEditor";
+import MapEditorWrapper from "./MapEditor";
+import ChartEditorWrapper from "./ChartEditor";
+import { allAvailableDatasets } from "./alldatasets";
 
 export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
   {
-    name: 'TwoColumn',
-    kind: 'flow',
-    source: './components', // Adjust the path
+    name: "TwoColumn",
+    kind: "flow",
+    source: "./components", // Adjust the path
     hasChildren: true,
-    props: [{ name: 'children', type: 'expression' }],
+    props: [{ name: "children", type: "expression" }],
     Editor: (props) => {
       return <TwoColumnEditorWrapper props={{ ...props }} />;
     },
   },
   {
-    name: 'Block',
-    kind: 'flow',
-    source: '@teamimpact/veda-ui', // Adjust the path
+    name: "Block",
+    kind: "flow",
+    source: "@teamimpact/veda-ui", // Adjust the path
     hasChildren: true,
     props: [],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'Figure',
-    kind: 'flow',
-    source: './components', // Adjust the path
+    name: "Figure",
+    kind: "flow",
+    source: "./components", // Adjust the path
     hasChildren: true,
     props: [],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'Break',
-    kind: 'flow',
-    source: './components', // Adjust the path
+    name: "Break",
+    kind: "flow",
+    source: "./components", // Adjust the path
     hasChildren: false,
     props: [],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'Prose',
-    kind: 'flow',
-    source: './components', // Adjust the path
+    name: "Prose",
+    kind: "flow",
+    source: "./components", // Adjust the path
     hasChildren: true,
-    props: [{ name: 'children', type: 'expression' }],
+    props: [{ name: "children", type: "expression" }],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'LeftColumn',
-    kind: 'flow',
-    source: './components',
+    name: "LeftColumn",
+    kind: "flow",
+    source: "./components",
     hasChildren: true,
-    props: [{ name: 'children', type: 'expression' }],
+    props: [{ name: "children", type: "expression" }],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'RightColumn',
-    kind: 'flow',
-    source: './components',
+    name: "RightColumn",
+    kind: "flow",
+    source: "./components",
     hasChildren: true,
-    props: [{ name: 'children', type: 'expression' }],
+    props: [{ name: "children", type: "expression" }],
     Editor: GenericJsxEditor,
   },
   {
-    name: 'Map',
-    kind: 'text',
-    source: './components',
+    name: "Map",
+    kind: "text",
+    source: "./components",
     props: [
-      { name: 'center', type: 'string' },
-      { name: 'zoom', type: 'string' },
-      { name: 'datasetId', type: 'string' },
-      { name: 'layerId', type: 'string' },
-      { name: 'dateTime', type: 'string' },
-      { name: 'compareDateTime', type: 'string' },
-      { name: 'compareLabel', type: 'string' },
+      { name: "center", type: "string" },
+      { name: "zoom", type: "string" },
+      { name: "datasetId", type: "string" },
+      { name: "layerId", type: "string" },
+      { name: "dateTime", type: "string" },
+      { name: "compareDateTime", type: "string" },
+      { name: "compareLabel", type: "string" },
     ],
     hasChildren: false,
-   Editor: (props) => {
-  return (
-    <>
-      <MapEditorWrapper 
-        {...props}
-        {...props.mdastNode.attributes.reduce((acc: any, attr: any) => {
-          acc[attr.name] = attr.value;
-          return acc;
-        }, {})}
-        allAvailableDatasets={allAvailableDatasets}
-      />
-    </>
-  );
-},
+    Editor: (props) => {
+      return (
+        <>
+          <MapEditorWrapper
+            {...props}
+            {...props.mdastNode.attributes.reduce((acc: any, attr: any) => {
+              acc[attr.name] = attr.value;
+              return acc;
+            }, {})}
+            allAvailableDatasets={allAvailableDatasets}
+          />
+        </>
+      );
+    },
   },
   {
-    name: 'Chart',
-    kind: 'text',
-    source: './components',
+    name: "Chart",
+    kind: "text",
+    source: "./components",
     props: [
-      { name: 'dataPath', type: 'string' },
-      { name: 'dateFormat', type: 'string' },
-      { name: 'idKey', type: 'string' },
-      { name: 'xKey', type: 'string' },
-      { name: 'yKey', type: 'string' },
-      { name: 'yAxisLabel', type: 'string' },
-      { name: 'xAxisLabel', type: 'string' },
-      { name: 'highlightStart', type: 'string' },
-      { name: 'highlightEnd', type: 'string' },
-      { name: 'highlightLabel', type: 'string' },
-      { name: 'availableDomain', type: 'string' },
-      { name: 'altTitle', type: 'string' },
-      { name: 'colorScheme', type: 'string' },
-      { name: 'colors', type: 'string' },
-      { name: 'altDesc', type: 'string' },
+      { name: "dataPath", type: "string" },
+      { name: "dateFormat", type: "string" },
+      { name: "idKey", type: "string" },
+      { name: "xKey", type: "string" },
+      { name: "yKey", type: "string" },
+      { name: "yAxisLabel", type: "string" },
+      { name: "xAxisLabel", type: "string" },
+      { name: "highlightStart", type: "string" },
+      { name: "highlightEnd", type: "string" },
+      { name: "highlightLabel", type: "string" },
+      { name: "availableDomain", type: "string" },
+      { name: "altTitle", type: "string" },
+      { name: "colorScheme", type: "string" },
+      { name: "colors", type: "string" },
+      { name: "altDesc", type: "string" },
     ],
     hasChildren: false,
-   Editor: (props) => {
-    return (
-    <>
-      <ChartEditorWrapper
-        {...props}
-        allAvailableDatasets={allAvailableDatasets}
-        // allAvailableCsvs={availableCsvs} // Add this line
-      />
-    </>
-  );
+    Editor: (props) => {
+      return (
+        <>
+          <ChartEditorWrapper
+            {...props}
+            allAvailableDatasets={allAvailableDatasets}
+            // allAvailableCsvs={availableCsvs} // Add this line
+          />
+        </>
+      );
     },
   },
 ];
 
 export const CalloutDirectiveDescriptor: DirectiveDescriptor = {
-  name: 'callout',
+  name: "callout",
   testNode(node) {
-    return node.name === 'callout';
+    return node.name === "callout";
   },
   // set some attribute names to have the editor display a property editor popup.
   attributes: [],

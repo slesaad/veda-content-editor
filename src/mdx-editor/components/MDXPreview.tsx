@@ -60,7 +60,7 @@ const MapWrapper = (props) => {
         dateTime={props.dateTime}
         compareDateTime={props.compareDateTime}
         compareLabel={props.compareLabel}
-        allAvailableDatasets={allAvailableDatasets}
+
       />
     );
   } catch (error) {

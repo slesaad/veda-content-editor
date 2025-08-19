@@ -158,6 +158,10 @@ export const handleDataPathValidation = async (
     const url = new URL(draft);
     if (!url.pathname.toLowerCase().endsWith(".csv")) {
       // Not a .csv file
+      console.log(
+        '!url.pathname.toLowerCase().endsWith(".csv")',
+        !url.pathname.toLowerCase().endsWith(".csv")
+      );
       setInputErrors({ ...inputErrors, [propName]: true });
       return;
     }

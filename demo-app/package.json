@@ -18,6 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "buffer": "^6.0.3",
+    "dev-veda-content-editor": "^0.1.18",
     "dotenv": "^17.2.1",
     "eslint": "8.57.0",
     "eslint-config-next": "^14.2.14",
@@ -35,5 +36,6 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.5.0",
     "vite": "^4.5.14"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
