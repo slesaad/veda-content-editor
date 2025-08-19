@@ -3,9 +3,19 @@ import { transformToVedaData } from '../utils/data';
 import DataProvider from '../others/store/providers/data';
 import VedaUIConfigProvider from '../others/store/providers/veda-ui-config';
 import DevseedUIThemeProvider from '../others/store/providers/theme';
-// import type { DatasetWithContent } from 'app/types/content';
 
 import { MapBlock } from '@teamimpact/veda-ui';
+
+interface DatasetWithContent {
+  metadata: {
+    id: string;
+    name: string;
+    description: string;
+    layers?: any[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
 
 interface MapPreviewProps {
   allAvailableDatasets?: DatasetWithContent[];
@@ -28,7 +38,15 @@ const transformed = transformToVedaData(datasetsToUse as any);
       <VedaUIConfigProvider>
         <DataProvider initialDatasets={datasetsToUse}>
           <div className='relative w-full h-[250px]'>
-            <MapBlock {...props} datasets={transformed} />
+            <MapBlock 
+              {...props} 
+              datasets={transformed} 
+              layerId={props.layerId || 'default'}
+              datasetId={props.datasetId || 'default'}
+              dateTime={props.dateTime || new Date().toISOString()}
+              center={props.center || [-94.5, 41.25]}
+              zoom={props.zoom || 8.3}
+            />
           </div>
         </DataProvider>
       </VedaUIConfigProvider>

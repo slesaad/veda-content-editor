@@ -1,0 +1,41 @@
+{
+  "name": "veda-content-editor",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --open",
+    "start": "vite --open",
+    "start-local": "vite --config ../../../vite.config.local.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@types/node": "20.11.17",
+    "@types/react": "18.2.55",
+    "@types/react-dom": "18.2.19",
+    "@types/styled-components": "^5.1.34",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "buffer": "^6.0.3",
+    "dev-veda-content-editor": "^0.1.18",
+    "dotenv": "^17.2.1",
+    "eslint": "8.57.0",
+    "eslint-config-next": "^14.2.14",
+    "eslint-config-prettier": "^9.1.0",
+    "events": "^3.3.0",
+    "focus-trap-react": "^11.0.4",
+    "process": "^0.11.10",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^7.7.1",
+    "stream-browserify": "^3.0.0",
+    "styled-components": "^5.3.6",
+    "sugar-high": "^0.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.0",
+    "vite": "^4.5.14"
+  },
+  "packageManager": "yarn@4.9.2"
+}

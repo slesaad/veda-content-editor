@@ -1,9 +1,9 @@
-import React, { createContext, useContext } from 'react';
-import { LexicalEditor, LexicalNode } from 'lexical';
-
+import React, { createContext, useContext } from "react";
+import { LexicalEditor, LexicalNode } from "lexical";
+import { MapContextNode } from "../../mdx-plugins/nodes/MapNodes";
 interface MapContextValue {
   parentEditor: LexicalEditor;
-  lexicalNode: LexicalNode;
+  lexicalNode: MapContextNode;
 }
 
 const MapContext = createContext<MapContextValue | null>(null);
@@ -21,7 +21,7 @@ export const MapContextProvider = ({
 export const useMapContext = () => {
   const context = useContext(MapContext);
   if (!context) {
-    throw new Error('useMapContext must be used within a MapContextProvider');
+    throw new Error("useMapContext must be used within a MapContextProvider");
   }
   return context;
 };

@@ -1,28 +1,28 @@
-import React, { Suspense } from 'react';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { customComponents } from './components';
-// import { ChartWrapper } from './ChartPreview';
-import { DEFAULT_MAP_PROPS } from './ToolbarComponents.tsx';
-import { highlight } from 'sugar-high';
+import React, { useState, useEffect } from "react";
+
+import { MDXProvider } from "@mdx-js/react";
+import { evaluate } from "@mdx-js/mdx";
+import * as runtime from "react/jsx-runtime";
+
+import { ChartWrapper } from "./ChartPreview";
+import { DEFAULT_MAP_PROPS } from "./ToolbarComponents";
+import { highlight } from "sugar-high";
 import { Link } from "react-router-dom";
-
-import { allAvailableDatasets } from './alldatasets';
-
+import { allAvailableDatasets } from "./alldatasets";
 import {
-  Block,
   Prose,
   Caption,
   Chapter,
   Figure,
   Image,
+  Block,
   LegacyGlobalStyles,
-} from '@teamimpact/veda-ui';
-// import { mockDatasets } from './MapPreview';
-import Providers from '../others/providers';
+} from "@teamimpact/veda-ui";
+
+import Providers from "../others/providers";
 // Correctly import the default export from mdx-preview-map with error handling
 
-
-import { ClientMapBlock } from './MapPreview'
+import { ClientMapBlock } from "./MapPreview";
 
 const MapWrapper = (props) => {
   try {
@@ -30,11 +30,11 @@ const MapWrapper = (props) => {
     let center;
     try {
       center =
-        typeof props.center === 'string' && props.center.startsWith('[')
+        typeof props.center === "string" && props.center.startsWith("[")
           ? JSON.parse(props.center)
           : props.center || DEFAULT_MAP_PROPS.center;
     } catch (error) {
-      console.warn('Error parsing center coordinates, using default:', error);
+      console.warn("Error parsing center coordinates, using default:", error);
       center = DEFAULT_MAP_PROPS.center;
     }
 
@@ -42,11 +42,11 @@ const MapWrapper = (props) => {
     let zoom;
     try {
       zoom =
-        typeof props.zoom === 'string'
+        typeof props.zoom === "string"
           ? parseFloat(props.zoom) || DEFAULT_MAP_PROPS.zoom
           : props.zoom || DEFAULT_MAP_PROPS.zoom;
     } catch (error) {
-      console.warn('Error parsing zoom level, using default:', error);
+      console.warn("Error parsing zoom level, using default:", error);
       zoom = DEFAULT_MAP_PROPS.zoom;
     }
 
@@ -60,14 +60,14 @@ const MapWrapper = (props) => {
         dateTime={props.dateTime}
         compareDateTime={props.compareDateTime}
         compareLabel={props.compareLabel}
-        allAvailableDatasets={allAvailableDatasets}
+
       />
     );
   } catch (error) {
-    console.error('Error rendering map:', error);
+    console.error("Error rendering map:", error);
     return (
-      <div className='h-[400px] flex items-center justify-center bg-red-50 border border-red-300 rounded'>
-        <div className='text-red-500'>Error rendering map component</div>
+      <div className="h-[400px] flex items-center justify-center bg-red-50 border border-red-300 rounded">
+        <div className="text-red-500">Error rendering map component</div>
       </div>
     );
   }
@@ -110,10 +110,10 @@ function slugify(str) {
       .toString()
       .toLowerCase()
       .trim() // Remove whitespace from both ends of a string
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/&/g, '-and-') // Replace & with 'and'
-      .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-      .replace(/\-\-+/g, '-'); // Replace multiple - with single -
+      .replace(/\s+/g, "-") // Replace spaces with -
+      .replace(/&/g, "-and-") // Replace & with 'and'
+      .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
+      .replace(/\-\-+/g, "-"); // Replace multiple - with single -
   }
 }
 function createHeading(level) {
@@ -123,13 +123,13 @@ function createHeading(level) {
       `h${level}`,
       { id: slug },
       [
-        React.createElement('a', {
+        React.createElement("a", {
           href: `#${slug}`,
           key: `link-${slug}`,
-          className: 'anchor',
+          className: "anchor",
         }),
       ],
-      children,
+      children
     );
   };
 
@@ -137,10 +137,9 @@ function createHeading(level) {
 
   return Heading;
 }
+
 // Define all components used in MDX
 const components = {
-  ...customComponents,
-  // Basic markdown components
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
@@ -158,38 +157,75 @@ const components = {
   Chapter: Chapter,
   TwoColumn: (props) => {
     return (
-      <div className='grid-container maxw-full'>
-        <div className='grid-row grid-gap-lg'>{props.children}</div>
+      <div className="grid-container maxw-full">
+        <div className="grid-row grid-gap-lg">{props.children}</div>
       </div>
     );
   },
   LeftColumn: (props) => {
-    return <div className='grid-col-6 '>{props.children}</div>;
+    return <div className="grid-col-6 ">{props.children}</div>;
   },
   RightColumn: (props) => {
-    return <div className='grid-col-6  '>{props.children}</div>;
+    return <div className="grid-col-6  ">{props.children}</div>;
   },
 
   Map: MapWrapper,
-  // Chart: ChartWrapper,
+  Chart: ChartWrapper,
 };
 
-export function SimpleMDXPreview({ source }: MDXPreviewProps) {
+const MdxRuntime = ({ source, components }) => {
+  const [mdxModule, setMdxModule] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const evaluateMdx = async () => {
+      try {
+        // Don't pass components here
+        const mod = await evaluate(source, { ...runtime });
+        setMdxModule(mod);
+        setError(null);
+      } catch (e) {
+        console.error("MDX evaluation error:", e);
+        setError(e);
+      }
+    };
+    evaluateMdx();
+  }, [source]);
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-100 text-red-800 rounded">
+        <h4>MDX Preview Error</h4>
+        <pre className="whitespace-pre-wrap">{error.message}</pre>
+      </div>
+    );
+  }
+
+  if (!mdxModule) {
+    return <div className="p-4">Compiling MDX...</div>;
+  }
+
+  const Content = mdxModule.default;
+
+  // Pass components as props to Content
+  return (
+    <MDXProvider components={components}>
+      <Content components={components} />
+    </MDXProvider>
+  );
+};
+
+export function SimpleMDXPreview({ source }) {
   // Use an empty string as a default if source is undefined
   // const datasets = getDatasetsMetadata();
-  const safeSource = source || '';
+  const safeSource = source || "";
 
   return (
     <section>
-      <article className='prose'>
+      <article className="prose">
         <Providers datasets={allAvailableDatasets}>
           <LegacyGlobalStyles />
-
-          <Suspense
-            fallback={<div className='p-4'>Loading MDX preview...</div>}
-          >
-            <MDXRemote source={safeSource} components={components} />
-          </Suspense>
+          <MdxRuntime source={safeSource} components={components} />
         </Providers>
       </article>
     </section>

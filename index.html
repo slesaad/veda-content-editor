@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deck.gl Experiments</title>
+    <script>
+      // Polyfills for Node.js globals
+      if (typeof global === 'undefined') {
+        window.global = window;
+      }
+      if (typeof process === 'undefined') {
+        window.process = {
+          env: {},
+          version: '',
+          versions: {},
+          platform: 'browser',
+          nextTick: function(fn) { setTimeout(fn, 0); }
+        };
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

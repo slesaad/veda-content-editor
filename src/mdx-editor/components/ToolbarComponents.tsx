@@ -11,7 +11,7 @@ import {
   insertJsx$,
 } from '@mdxeditor/editor';
 
-// import { DEFAULT_CHART_PROPS } from './ChartPreview';
+import { DEFAULT_CHART_PROPS } from './ChartPreview';
 import { MapProps, ChartProps } from './types';
 
 export const DEFAULT_MAP_PROPS: MapProps = {
@@ -42,9 +42,10 @@ export const LeftColumnEditor: React.FC<any> = ({ mdastNode, descriptor }) => {
   return (
     <div className='border rounded-md p-2'>
       <NestedLexicalEditor
-        getContent={(node) => node.children}
+        getContent={(node) => (node as any).children}
         getUpdatedMdastNode={(node, children) => {
           updateMdastNode({ ...mdastNode, children });
+          return node;
         }}
       />
     </div>
@@ -79,33 +80,33 @@ export const InsertMapButton = (props) => {
   );
 };
 
-// export const InsertLineGraph = (props) => {
-//   const insertJsx = usePublisher(insertJsx$);
+export const InsertLineGraph = (props) => {
+  const insertJsx = usePublisher(insertJsx$);
 
-//   const handleClick = () => {
-//     try {
-//       insertJsx({
-//         name: 'Chart',
-//         kind: 'text',
-//         props: { ...DEFAULT_CHART_PROPS },
-//       });
-//     } catch (error) {
-//       console.error('Error inserting Map component:', error);
-//       alert('Could not insert chart component. See console for details.');
-//     }
-//   };
+  const handleClick = () => {
+    try {
+      insertJsx({
+        name: 'Chart',
+        kind: 'text',
+        props: { ...DEFAULT_CHART_PROPS },
+      });
+    } catch (error) {
+      console.error('Error inserting Map component:', error);
+      alert('Could not insert chart component. See console for details.');
+    }
+  };
 
-//   return (
-//     <Button
-//       onClick={handleClick}
-//       title='Insert Map'
-//       className='text-sm display-flex flex-align-center padding-1'
-//     >
-//       <Icon.Insights className='margin-right-05 width-3 height-3' />
-//       line graph
-//     </Button>
-//   );
-// };
+  return (
+    <Button
+      onClick={handleClick}
+      title='Insert Chart'
+      className='text-sm display-flex flex-align-center padding-1'
+    >
+      <Icon.Insights className='margin-right-05 width-3 height-3' />
+      line graph
+    </Button>
+  );
+};
 
 export const InsertSectionBreak = (props) => {
   const insertJsx = usePublisher(insertJsx$);
@@ -149,11 +150,13 @@ export const InsertTwoColumnButton = () => {
           {
             type: 'mdxJsxFlowElement',
             name: 'LeftColumn',
+            attributes: [],
             children: [{ type: 'paragraph', children: [{ type: 'text', value: '' }] }],
           },
           {
             type: 'mdxJsxFlowElement',
             name: 'RightColumn',
+            attributes: [],
             children: [{ type: 'paragraph', children: [{ type: 'text', value: '' }] }],
           },
         ],

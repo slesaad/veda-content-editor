@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   TextInput,
-  TextInputMask,
   Textarea,
   Label,
   DatePicker,
   Checkbox,
   Select,
-} from '@trussworks/react-uswds';
+} from "@trussworks/react-uswds";
 import {
   handleMapDateValidation,
   handleMapArrayValidation,
   handleChartDateValidation,
-} from './inputValidation';
+  handleDataPathValidation,
+} from "./inputValidation";
 
 interface FieldProps {
   fieldName: string;
@@ -37,25 +37,25 @@ interface FieldProps {
   options?: string[];
 }
 const checkRequired = (isRequired, value) => {
-  return isRequired && !value ? { validationStatus: 'error' } : '';
+  return isRequired && !value ? { validationStatus: "error" } : "";
 };
 
 const colorSchemes = [
-  'Blues',
-  'Greens',
-  'Greys',
-  'Oranges',
-  'Purples',
-  'Reds',
-  'Turbo',
-  'Viridis',
-  'Inferno',
-  'Magma',
-  'Plasma',
-  'Cividis',
-  'Warm',
-  'Cool',
-  'CubehelixDefault',
+  "Blues",
+  "Greens",
+  "Greys",
+  "Oranges",
+  "Purples",
+  "Reds",
+  "Turbo",
+  "Viridis",
+  "Inferno",
+  "Magma",
+  "Plasma",
+  "Cividis",
+  "Warm",
+  "Cool",
+  "CubehelixDefault",
 ];
 
 const setInput = (props) => {
@@ -77,13 +77,13 @@ const setInput = (props) => {
     options,
   } = props;
 
-if (options && Array.isArray(options)) {
+  if (options && Array.isArray(options)) {
     return (
       <>
-        <Label htmlFor={propName} className='margin-top-2'>
+        <Label htmlFor={propName} className="margin-top-2">
           {fieldName}
         </Label>
-        <span className='usa-hint'>{hint}</span>
+        <span className="usa-hint">{hint}</span>
         <Select
           id={propName}
           name={propName}
@@ -93,11 +93,10 @@ if (options && Array.isArray(options)) {
           }
           {...checkRequired(isRequired, value)}
         >
-          <option value=''>- Select option -</option>
           {options.map((option) => {
             // Check if option is a string or an object with value/label
-            const value = typeof option === 'object' ? option.value : option;
-            const label = typeof option === 'object' ? option.label : option;
+            const value = typeof option === "object" ? option.value : option;
+            const label = typeof option === "object" ? option.label : option;
 
             return (
               <option key={value} value={value}>
@@ -117,27 +116,26 @@ if (options && Array.isArray(options)) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-
-    if (propName === 'dateFormat' && draft != draftInputs.draftDateFormat) {
+    if (propName === "dateFormat" && draft != draftInputs.draftDateFormat) {
       setDraftInputs({ ...draftInputs, draftDateFormat: draft });
     }
     if (
-      propName === 'highlightStart' &&
+      propName === "highlightStart" &&
       draft != draftInputs.draftHighlightStart
     ) {
       setDraftInputs({ ...draftInputs, draftHighlightStart: draft });
     }
-    if (propName === 'highlightEnd' && draft != draftInputs.draftHighlightEnd) {
+    if (propName === "highlightEnd" && draft != draftInputs.draftHighlightEnd) {
       setDraftInputs({ ...draftInputs, draftHighlightEnd: draft });
     }
     clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async () => {
 
       if (validateAgainst) {
         if (
-          propName === 'dateFormat' ||
-          propName === 'highlightStart' ||
-          propName === 'highlightEnd'
+          propName === "dateFormat" ||
+          propName === "highlightStart" ||
+          propName === "highlightEnd"
         ) {
           handleChartDateValidation(
             propName,
@@ -146,9 +144,9 @@ if (options && Array.isArray(options)) {
             inputErrors,
             draft,
             onChange,
-            componentProps,
+            componentProps
           );
-        } else if (validateAgainst === 'defaultDateFormat') {
+        } else if (validateAgainst === "defaultDateFormat") {
           handleMapDateValidation(
             propName,
             draftInputs,
@@ -156,9 +154,9 @@ if (options && Array.isArray(options)) {
             setInputErrors,
             draft,
             onChange,
-            componentProps,
+            componentProps
           );
-        } else if (validateAgainst === 'centerFormat') {
+        } else if (validateAgainst === "centerFormat") {
           handleMapArrayValidation(
             propName,
             draftInputs,
@@ -166,7 +164,16 @@ if (options && Array.isArray(options)) {
             setInputErrors,
             draft,
             onChange,
+            componentProps
+          );
+          } else if (validateAgainst === "dataPath") {
+          await handleDataPathValidation(
+            propName,
+            draft,
+            onChange,
             componentProps,
+            setInputErrors,
+            inputErrors
           );
         } else {
           onChange({ ...componentProps, [propName]: draft });
@@ -180,29 +187,29 @@ if (options && Array.isArray(options)) {
   //Format date and submitted dates need to work or else the chart will throw an error.
 
   switch (cleanedType) {
-    case 'date':
+    case "date":
       return (
         //CHORE: Need to clean up or delete
         <>
-          <Label htmlFor='input-type-text' className='margin-top-2'>
+          <Label htmlFor="input-type-text" className="margin-top-2">
             {fieldName}
           </Label>
 
-          <span className='usa-hint'>{hint}</span>
+          <span className="usa-hint">{hint}</span>
 
           <DatePicker
             defaultValue={value}
-            onChange={(e) => console.log('DatePicker', e)}
+            onChange={(e) => console.log("DatePicker", e)}
             {...checkRequired(isRequired, value)}
           />
         </>
       );
       break;
-    case 'checkbox':
+    case "checkbox":
       return (
         <Checkbox
           id={fieldName}
-          name='checkbox'
+          name="checkbox"
           label={fieldName}
           onChange={(e) =>
             onChange({ ...componentProps, [propName]: e.target.value })
@@ -210,13 +217,13 @@ if (options && Array.isArray(options)) {
         />
       );
       break;
-    case 'select':
+    case "select":
       return (
         <>
-          <Label htmlFor='input-type-text' className='margin-top-2'>
+          <Label htmlFor="input-type-text" className="margin-top-2">
             {fieldName}
           </Label>
-          <span className='usa-hint'>{hint}</span>
+          <span className="usa-hint">{hint}</span>
           <Select
             id={fieldName}
             name={fieldName}
@@ -235,21 +242,21 @@ if (options && Array.isArray(options)) {
         </>
       );
       break;
-    case 'area':
+    case "area":
       return (
         <>
-          <Label htmlFor='input-type-text' className='margin-top-2'>
+          <Label htmlFor="input-type-text" className="margin-top-2">
             {fieldName}
           </Label>
-          <span className='usa-hint'>{hint}</span>
+          <span className="usa-hint">{hint}</span>
           <Textarea
-            id='input-type-text'
-            name='input-type-text'
+            id="input-type-text"
+            name="input-type-text"
             value={value}
             onChange={(e) => {
               onChange({ ...componentProps, [propName]: e.target.value });
             }}
-            className=''
+            className=""
             {...checkRequired(isRequired, value)}
           />
         </>
@@ -258,29 +265,27 @@ if (options && Array.isArray(options)) {
     default:
       return (
         <>
-          <Label htmlFor='input-type-text' className='margin-top-2'>
+          <Label htmlFor="input-type-text" className="margin-top-2">
             {fieldName}
           </Label>
 
-          <span className='usa-hint'>{hint}</span>
+          <span className="usa-hint">{hint}</span>
           <TextInput
-            id='input-type-text'
-            name='input-type-text'
-            type='text'
+            id="input-type-text"
+            name="input-type-text"
+            type="text"
             value={validateAgainst ? draft : value}
             onChange={(e) => {
               if (validateAgainst) {
-
                 setDraft(e.target.value);
               } else {
-
                 onChange({ ...componentProps, [propName]: e.target.value });
               }
             }}
             placeholder={placeHolder}
             {...checkRequired(isRequired, value)}
             validationStatus={
-              validateAgainst && (inputErrors[propName] ? 'error' : undefined)
+              validateAgainst && (inputErrors[propName] ? "error" : undefined)
             }
           />
         </>
