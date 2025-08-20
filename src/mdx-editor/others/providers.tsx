@@ -13,13 +13,18 @@ interface DatasetMetadata {
 interface ProviderProps {
   datasets?: DatasetMetadata[];
   children: ReactNode;
+  vedaConfig?: {
+    envMapboxToken?: string;
+    envApiStacEndpoint?: string;
+    envApiRasterEndpoint?: string;
+  };
 }
 
-export default function Providers({ datasets, children }: ProviderProps) {
+export default function Providers({ datasets, children, vedaConfig }: ProviderProps) {
   return (
     <>
       <DevseedUIThemeProvider>
-        <VedaUIConfigProvider>
+        <VedaUIConfigProvider vedaConfig={vedaConfig}>
           {datasets ? (
             <DataProvider initialDatasets={datasets}>{children}</DataProvider>
           ) : (

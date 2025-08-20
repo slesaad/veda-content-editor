@@ -9,13 +9,15 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build:lib": "vite build",
+    "clean": "rm -rf dist node_modules yarn.lock",
     "prepublishOnly": "vite build",
     "test:e2e": "npm run build:lib && cd e2e/vite-app && npm install --legacy-peer-deps --no-audit --no-fund && npm run build"
   },
@@ -114,5 +116,6 @@
     "url": "https://github.com/slesaad/veda-content-editor/issues"
   },
   "homepage": "https://github.com/slesaad/veda-content-editor#readme",
-  "description": "A content editor component for VEDA projects."
+  "description": "A content editor component for VEDA projects.",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -21,6 +21,8 @@ import {
   MDXEditor,
   directivesPlugin,
   linkDialogPlugin,
+  diffSourcePlugin,
+  DiffSourceToggleWrapper,
 } from "@mdxeditor/editor";
 import { reserializedMdxContent } from "../utils/reserializeMDast";
 
@@ -133,25 +135,34 @@ export function MDXEditorEnhanced({ markdown, onChange, previewMDAST }: any) {
           directivesPlugin({
             directiveDescriptors: [CalloutDirectiveDescriptor],
           }),
+          diffSourcePlugin({
+            viewMode: 'rich-text',
+            diffMarkdown: markdown,
+            codeMirrorExtensions: [],
+          }),
           toolbarPlugin({
             toolbarContents: () => (
-              <div className="grid-column">
-                <div className="grid-row border-bottom-1px padding-y-1">
-                  <UndoRedo />
-                  <BoldItalicUnderlineToggles />
-                  <ListsToggle />
-                  <BlockTypeSelect />
-                  <CreateLink />
-                  <CodeToggle />
-                  <InsertImage />
-                </div>
-                <div className="grid-row padding-y-1">
-                  <InsertMapButton />
-                  <InsertLineGraph />
-                  <InsertTwoColumnButton />
-                  <InsertSectionBreak />
-                </div>
-              </div>
+              <>
+                <DiffSourceToggleWrapper>
+                  <div className="grid-column">
+                    <div className="grid-row border-bottom-1px padding-y-1">
+                      <UndoRedo />
+                      <BoldItalicUnderlineToggles />
+                      <ListsToggle />
+                      <BlockTypeSelect />
+                      <CreateLink />
+                      <CodeToggle />
+                      <InsertImage />
+                    </div>
+                    <div className="grid-row padding-y-1">
+                      <InsertMapButton />
+                      <InsertLineGraph />
+                      <InsertTwoColumnButton />
+                      <InsertSectionBreak />
+                    </div>
+                  </div>
+                </DiffSourceToggleWrapper>
+              </>
             ),
           }),
         ]}

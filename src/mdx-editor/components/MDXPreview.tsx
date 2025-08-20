@@ -215,7 +215,7 @@ const MdxRuntime = ({ source, components }) => {
   );
 };
 
-export function SimpleMDXPreview({ source }) {
+export function SimpleMDXPreview({ source, vedaConfig }) {
   // Use an empty string as a default if source is undefined
   // const datasets = getDatasetsMetadata();
   const safeSource = source || "";
@@ -223,7 +223,7 @@ export function SimpleMDXPreview({ source }) {
   return (
     <section>
       <article className="prose">
-        <Providers datasets={allAvailableDatasets}>
+        <Providers datasets={allAvailableDatasets} vedaConfig={vedaConfig}>
           <LegacyGlobalStyles />
           <MdxRuntime source={safeSource} components={components} />
         </Providers>

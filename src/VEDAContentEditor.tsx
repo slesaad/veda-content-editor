@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import Providers from "./mdx-editor/others/providers";
 import '@trussworks/react-uswds/lib/uswds.css';
+import '@mdxeditor/editor/style.css';
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { LegacyGlobalStyles } from "@teamimpact/veda-ui";
@@ -48,6 +49,11 @@ export interface EditorPageProps {
   initialContent?: string;
   onChange?: (content: string) => void;
   className?: string;
+  vedaConfig?: {
+    envMapboxToken?: string;
+    envApiStacEndpoint?: string;
+    envApiRasterEndpoint?: string;
+  };
 }
 
 export default function EditorPage({
@@ -55,6 +61,7 @@ export default function EditorPage({
   initialContent: customInitialContent,
   onChange,
   className,
+  vedaConfig,
 }: EditorPageProps) {
   const initialConfig = {
     namespace: "MyEditor", // Unique namespace for this editor instance
@@ -188,7 +195,7 @@ export default function EditorPage({
                 }
               >
                 {/* THROWS ERROR */}
-                <SimpleMDXPreview source={reserializedMdxContent} />
+                <SimpleMDXPreview source={reserializedMdxContent} vedaConfig={vedaConfig} />
               </Suspense>
             </div>
           </div>
