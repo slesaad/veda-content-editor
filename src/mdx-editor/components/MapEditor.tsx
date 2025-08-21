@@ -268,80 +268,78 @@ const MapEditorWithPreview: React.FC<any> = (props) => {
       <div className=" border-05 border-primary rounded-lg overflow-hidden shadow-sm bg-white">
         <div className="flex flex-col">
           <div className="padding-2 grid-container w-full maxw-full margin-2 bg-gray-10 radius-lg">
-            {isEditing && (
-              <div>
-                <h3
-                  className={`font-medium ${isEditing ? "text-blue-700" : "text-gray-500"} text-sm`}
-                >
-                  Map Properties
-                </h3>
-                <div className="grid-row flex-align-end grid-gap-2">
-                  {firstInterface.map((field) => {
-                    const { propName } = field;
+            <div style={{ display: isEditing ? 'block' : 'none' }}>
+              <h3
+                className={`font-medium ${isEditing ? "text-blue-700" : "text-gray-500"} text-sm`}
+              >
+                Map Properties
+              </h3>
+              <div className="grid-row flex-align-end grid-gap-2">
+                {firstInterface.map((field) => {
+                  const { propName } = field;
 
-                    const fieldProps: any = {
-                      ...field,
-                      value: mapProps[propName],
-                      onChange: setMapProps,
-                      componentProps: mapProps,
-                      draftInputs,
-                      inputErrors,
-                      setInputErrors,
-                      setDraftInputs,
-                    };
+                  const fieldProps: any = {
+                    ...field,
+                    value: mapProps[propName],
+                    onChange: setMapProps,
+                    componentProps: mapProps,
+                    draftInputs,
+                    inputErrors,
+                    setInputErrors,
+                    setDraftInputs,
+                  };
 
-                    if (propName === "datasetId") {
-                      fieldProps.options = datasetOptions; // Use dataset options
-                    } else if (propName === "layerId") {
-                      fieldProps.options = layerOptions; // Use layer options
-                    }
+                  if (propName === "datasetId") {
+                    fieldProps.options = datasetOptions; // Use dataset options
+                  } else if (propName === "layerId") {
+                    fieldProps.options = layerOptions; // Use layer options
+                  }
 
-                    return InputField(fieldProps);
-                  })}
-                </div>
-                <h4>Map Comparison</h4>
-                <div className="grid-row flex-align-end grid-gap-2">
-                  {comparisonInterface.map((field) => {
-                    const { propName, fieldName } = field;
-                    const type = (field as any).type;
-                    const customClass = (field as any).customClass;
-
-                    return InputField({
-                      ...field,
-                      fieldName,
-                      value: mapProps[propName],
-                      onChange: setMapProps,
-                      type: type,
-                      componentProps: mapProps,
-                      propName,
-                      customClass: customClass,
-                      draftInputs,
-                      setDraftInputs,
-                      inputErrors,
-                      setInputErrors,
-                    });
-                  })}
-                </div>
-                <div className="grid-row flex-align-start grid-gap-2">
-                  {captionInterface.map((field) => {
-                    const { propName, fieldName } = field;
-                    const type = (field as any).type;
-                    const customClass = (field as any).customClass;
-
-                    return InputField({
-                      ...field,
-                      fieldName,
-                      value: mapProps[propName],
-                      onChange: setMapProps,
-                      type: type,
-                      componentProps: mapProps,
-                      propName: propName,
-                      customClass: customClass,
-                    });
-                  })}
-                </div>
+                  return InputField(fieldProps);
+                })}
               </div>
-            )}
+              <h4>Map Comparison</h4>
+              <div className="grid-row flex-align-end grid-gap-2">
+                {comparisonInterface.map((field) => {
+                  const { propName, fieldName } = field;
+                  const type = (field as any).type;
+                  const customClass = (field as any).customClass;
+
+                  return InputField({
+                    ...field,
+                    fieldName,
+                    value: mapProps[propName],
+                    onChange: setMapProps,
+                    type: type,
+                    componentProps: mapProps,
+                    propName,
+                    customClass: customClass,
+                    draftInputs,
+                    setDraftInputs,
+                    inputErrors,
+                    setInputErrors,
+                  });
+                })}
+              </div>
+              <div className="grid-row flex-align-start grid-gap-2">
+                {captionInterface.map((field) => {
+                  const { propName, fieldName } = field;
+                  const type = (field as any).type;
+                  const customClass = (field as any).customClass;
+
+                  return InputField({
+                    ...field,
+                    fieldName,
+                    value: mapProps[propName],
+                    onChange: setMapProps,
+                    type: type,
+                    componentProps: mapProps,
+                    propName: propName,
+                    customClass: customClass,
+                  });
+                })}
+              </div>
+            </div>
 
             <div className={`${isEditing && "padding-top-2"}`}>
               <Button

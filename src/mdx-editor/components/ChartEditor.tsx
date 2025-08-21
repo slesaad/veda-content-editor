@@ -176,34 +176,32 @@ const ChartEditorWithPreview: React.FC<any> = (props) => {
     <div className=" border-05 border-primary rounded-lg overflow-hidden shadow-sm bg-white">
       <div className="flex flex-col">
         <div className="padding-2 grid-container w-full maxw-full margin-2 bg-gray-10 radius-lg">
-          {isEditing && (
-            <div>
-              <h3
-                className={`font-medium ${
-                  isEditing ? "text-blue-700" : "text-gray-500"
-                } text-sm`}
-              >
-                Chart Properties
-              </h3>
+          <div style={{ display: isEditing ? 'block' : 'none' }}>
+            <h3
+              className={`font-medium ${
+                isEditing ? "text-blue-700" : "text-gray-500"
+              } text-sm`}
+            >
+              Chart Properties
+            </h3>
 
-              <div className="grid-row flex-align-start grid-gap-2">
-                {interfaceList.map((input) => {
-                  const { propName } = input;
+            <div className="grid-row flex-align-start grid-gap-2">
+              {interfaceList.map((input) => {
+                const { propName } = input;
 
-                  return InputField({
-                    ...input,
-                    value: chartProps[propName],
-                    onChange: setChartProps,
-                    componentProps: chartProps,
-                    draftInputs,
-                    setDraftInputs,
-                    inputErrors,
-                    setInputErrors,
-                  });
-                })}
-              </div>
+                return InputField({
+                  ...input,
+                  value: chartProps[propName],
+                  onChange: setChartProps,
+                  componentProps: chartProps,
+                  draftInputs,
+                  setDraftInputs,
+                  inputErrors,
+                  setInputErrors,
+                });
+              })}
             </div>
-          )}
+          </div>
 
           <div className={`${isEditing && "padding-top-2"}`}>
             <Button
