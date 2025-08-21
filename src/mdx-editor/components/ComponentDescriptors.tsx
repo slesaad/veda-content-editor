@@ -82,6 +82,9 @@ export const jsxComponentDescriptors: JsxComponentDescriptor[] = [
       { name: "dateTime", type: "string" },
       { name: "compareDateTime", type: "string" },
       { name: "compareLabel", type: "string" },
+      { name: "attrUrl", type: "string" },
+      { name: "attrAuthor", type: "string" },
+      { name: "caption", type: "string" },
     ],
     hasChildren: false,
     Editor: (props) => {

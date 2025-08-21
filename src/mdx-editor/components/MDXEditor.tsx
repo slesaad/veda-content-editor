@@ -43,6 +43,7 @@ import { visit } from "unist-util-visit";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxJsx } from "micromark-extension-mdx-jsx";
 import { mdxJsxFromMarkdown } from "mdast-util-mdx-jsx";
+import { EditorState } from "@codemirror/state";
 
 interface MDXEditorWrapperProps {
   markdown: string;
@@ -137,8 +138,9 @@ export function MDXEditorEnhanced({ markdown, onChange, previewMDAST }: any) {
           }),
           diffSourcePlugin({
             viewMode: 'rich-text',
-            diffMarkdown: markdown,
-            codeMirrorExtensions: [],
+            codeMirrorExtensions: [EditorState.readOnly.of(true)],
+            diffMarkdown: '',
+            readOnlyDiff: false,
           }),
           toolbarPlugin({
             toolbarContents: () => (
