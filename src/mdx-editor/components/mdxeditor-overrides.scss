@@ -138,6 +138,37 @@
   box-sizing: border-box;
 }
 
+/* Fix for USWDS input styles - ensure white backgrounds */
+.usa-input,
+.usa-textarea,
+.usa-select,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea,
+select {
+  background-color: white !important;
+  color: #1b1b1b !important;
+  border: 1px solid #565c65 !important;
+}
+
+/* Ensure proper contrast on focus */
+.usa-input:focus,
+.usa-textarea:focus,
+.usa-select:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: white !important;
+  border-color: #005ea2 !important;
+  outline: 0.25rem solid #2491ff !important;
+  outline-offset: 0 !important;
+}
+
 /* Ensure buttons have proper styling */
 button[type="button"] {
   cursor: pointer;

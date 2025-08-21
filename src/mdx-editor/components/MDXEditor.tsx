@@ -21,6 +21,8 @@ import {
   MDXEditor,
   directivesPlugin,
   linkDialogPlugin,
+  diffSourcePlugin,
+  DiffSourceToggleWrapper,
 } from "@mdxeditor/editor";
 import { reserializedMdxContent } from "../utils/reserializeMDast";
 
@@ -41,6 +43,7 @@ import { visit } from "unist-util-visit";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxJsx } from "micromark-extension-mdx-jsx";
 import { mdxJsxFromMarkdown } from "mdast-util-mdx-jsx";
+import { EditorState } from "@codemirror/state";
 
 interface MDXEditorWrapperProps {
   markdown: string;
@@ -133,25 +136,35 @@ export function MDXEditorEnhanced({ markdown, onChange, previewMDAST }: any) {
           directivesPlugin({
             directiveDescriptors: [CalloutDirectiveDescriptor],
           }),
+          diffSourcePlugin({
+            viewMode: 'rich-text',
+            codeMirrorExtensions: [EditorState.readOnly.of(true)],
+            diffMarkdown: '',
+            readOnlyDiff: false,
+          }),
           toolbarPlugin({
             toolbarContents: () => (
-              <div className="grid-column">
-                <div className="grid-row border-bottom-1px padding-y-1">
-                  <UndoRedo />
-                  <BoldItalicUnderlineToggles />
-                  <ListsToggle />
-                  <BlockTypeSelect />
-                  <CreateLink />
-                  <CodeToggle />
-                  <InsertImage />
-                </div>
-                <div className="grid-row padding-y-1">
-                  <InsertMapButton />
-                  <InsertLineGraph />
-                  <InsertTwoColumnButton />
-                  <InsertSectionBreak />
-                </div>
-              </div>
+              <>
+                <DiffSourceToggleWrapper>
+                  <div className="grid-column">
+                    <div className="grid-row border-bottom-1px padding-y-1">
+                      <UndoRedo />
+                      <BoldItalicUnderlineToggles />
+                      <ListsToggle />
+                      <BlockTypeSelect />
+                      <CreateLink />
+                      <CodeToggle />
+                      <InsertImage />
+                    </div>
+                    <div className="grid-row padding-y-1">
+                      <InsertMapButton />
+                      <InsertLineGraph />
+                      <InsertTwoColumnButton />
+                      <InsertSectionBreak />
+                    </div>
+                  </div>
+                </DiffSourceToggleWrapper>
+              </>
             ),
           }),
         ]}
