@@ -56,13 +56,14 @@ export interface EditorPageProps {
   };
 }
 
-export default function EditorPage({
+export default function VEDAContentEditor({
   allAvailableDatasets,
   initialContent: customInitialContent,
   onChange,
   className,
   vedaConfig,
 }: EditorPageProps) {
+  console.log('VEDAContentEditor received vedaConfig:', vedaConfig);
   const initialConfig = {
     namespace: "MyEditor", // Unique namespace for this editor instance
     onError: (error: Error) => {
@@ -113,10 +114,9 @@ export default function EditorPage({
   };
 
   return (
+    <Providers datasets={allAvailableDatasets} vedaConfig={vedaConfig}>
     <div className="container mx-auto p-4 max-w-5xl min-h-screen bg-gray-50">
       {/* Custom Tab Buttons */}
-      {/* <Providers datasets={allAvailableDatasets}>
-      <LegacyGlobalStyles /> */}
       <div className="flex space-x-4 mb-4">
         <button
           onClick={() => handleTabChange(0)}
@@ -214,9 +214,10 @@ export default function EditorPage({
           </div>
         )}
       </div>
-      {/* </Providers> */}
     </div>
+    </Providers>
   );
   // return<div>CAN YOU SEE ME TEST 3</div>
 }
 
+export { VEDAContentEditor };

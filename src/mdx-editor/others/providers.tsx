@@ -21,6 +21,7 @@ interface ProviderProps {
 }
 
 export default function Providers({ datasets, children, vedaConfig }: ProviderProps) {
+  console.log('Providers received vedaConfig:', vedaConfig);
   return (
     <>
       <DevseedUIThemeProvider>
@@ -28,7 +29,7 @@ export default function Providers({ datasets, children, vedaConfig }: ProviderPr
           {datasets ? (
             <DataProvider initialDatasets={datasets}>{children}</DataProvider>
           ) : (
-            { children }
+            children
           )}
         </VedaUIConfigProvider>
       </DevseedUIThemeProvider>

@@ -14,13 +14,18 @@ interface VedaUIConfigProviderProps {
 export default function VedaUIConfigProvider({ children, vedaConfig }: VedaUIConfigProviderProps) {
   const VedaUIProviderComponent = VedaUIProvider as any;
   
-  // Use provided config or fallback to empty strings
-  // The consuming app should provide these values
+  // Debug logging
+  console.log('VedaUIConfigProvider received vedaConfig:', vedaConfig);
+  
+  // Use provided config - no fallback values
+  // The consuming app MUST provide these values
   const config = {
     envMapboxToken: vedaConfig?.envMapboxToken || '',
     envApiStacEndpoint: vedaConfig?.envApiStacEndpoint || '',
     envApiRasterEndpoint: vedaConfig?.envApiRasterEndpoint || '',
   };
+  
+  console.log('VedaUIConfigProvider using config:', config);
   
   return (
     <VedaUIProviderComponent config={config}>
