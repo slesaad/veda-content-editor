@@ -63,7 +63,6 @@ export default function VEDAContentEditor({
   className,
   vedaConfig,
 }: EditorPageProps) {
-  console.log('VEDAContentEditor received vedaConfig:', vedaConfig);
   const initialConfig = {
     namespace: "MyEditor", // Unique namespace for this editor instance
     onError: (error: Error) => {

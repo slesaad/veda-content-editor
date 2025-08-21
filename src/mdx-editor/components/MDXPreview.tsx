@@ -218,7 +218,6 @@ const MdxRuntime = ({ source, components }) => {
 export function SimpleMDXPreview({ source, vedaConfig }) {
   // Use an empty string as a default if source is undefined
   // const datasets = getDatasetsMetadata();
-  console.log('SimpleMDXPreview received vedaConfig:', vedaConfig);
   const safeSource = source || "";
 
   return (

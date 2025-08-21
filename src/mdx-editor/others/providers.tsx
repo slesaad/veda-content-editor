@@ -21,7 +21,6 @@ interface ProviderProps {
 }
 
 export default function Providers({ datasets, children, vedaConfig }: ProviderProps) {
-  console.log('Providers received vedaConfig:', vedaConfig);
   return (
     <>
       <DevseedUIThemeProvider>

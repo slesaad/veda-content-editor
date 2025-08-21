@@ -14,9 +14,6 @@ interface VedaUIConfigProviderProps {
 export default function VedaUIConfigProvider({ children, vedaConfig }: VedaUIConfigProviderProps) {
   const VedaUIProviderComponent = VedaUIProvider as any;
   
-  // Debug logging
-  console.log('VedaUIConfigProvider received vedaConfig:', vedaConfig);
-  
   // Use provided config - no fallback values
   // The consuming app MUST provide these values
   const config = {
@@ -24,8 +21,6 @@ export default function VedaUIConfigProvider({ children, vedaConfig }: VedaUICon
     envApiStacEndpoint: vedaConfig?.envApiStacEndpoint || '',
     envApiRasterEndpoint: vedaConfig?.envApiRasterEndpoint || '',
   };
-  
-  console.log('VedaUIConfigProvider using config:', config);
   
   return (
     <VedaUIProviderComponent config={config}>
